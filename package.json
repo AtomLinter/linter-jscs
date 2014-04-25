@@ -1,0 +1,19 @@
+{
+  "name": "linter-jscs",
+  "main": "./lib/init",
+  "linter-package": true,
+  "version": "0.0.1",
+  "description": "Linter plugin for JavaScript, using JSCS",
+  "activationEvents": [
+    "linter-jscs:toggle"
+  ],
+  "repository": "https://github.com/iam4x/linter-jscs",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+    "extendonclass": "~1.0.0",
+    "jscs": "~1.3.0"
+  }
+}
