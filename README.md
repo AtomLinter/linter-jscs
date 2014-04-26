@@ -1,7 +1,7 @@
 JSCSLinter
 ==========
 
-> Still in development, not working ATM!
+> Ready to be released, waiting on a pull-request, see: https://github.com/AtomLinter/Linter/pull/4
 
 This linter plugin for Atom.io provides an interface to [jscs](https://github.com/mdevils/node-jscs). It will be used with files that have the “JS” syntax.
 
