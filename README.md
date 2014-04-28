@@ -3,7 +3,7 @@ JSCS Linter
 
 A gif is better than everything:
 
-![linter-jscs](example.gif)
+![linter-jscs](https://github.com/iam4x/linter-jscs/raw/master/example.gif)
 
 This linter plugin for Atom.io provides an interface to [jscs](https://github.com/mdevils/node-jscs). It will be used with files that have the “JS” syntax.
 
