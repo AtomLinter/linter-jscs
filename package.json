@@ -2,7 +2,7 @@
   "name": "linter-jscs",
   "main": "./lib/init",
   "linter-package": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Linter plugin for JavaScript, using JSCS",
   "activationEvents": [
     "linter-jscs:toggle"
