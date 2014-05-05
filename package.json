@@ -7,7 +7,7 @@
   "activationEvents": [
     "linter-jscs:toggle"
   ],
-  "repository": "https://github.com/iam4x/linter-jscs",
+  "repository": "https://github.com/AtomLinter/linter-jscs",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
