@@ -18,10 +18,10 @@ class LinterJscs extends Linter
   regex: 'line="(?<line>[0-9]+)" column="(?<col>[0-9]+).+?message="(?<message>.+)" s'
 
 
-  constructor: (editor)->
-    super(editor)
+  constructor: (editor) ->
+    super editor
 
-    config = findFile(@cwd, ['.jscsrc', '.jscs.json'])
+    config = findFile @cwd, ['.jscsrc', '.jscs.json']
     if config
       @cmd += " -c #{config}"
 
