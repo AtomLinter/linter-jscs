@@ -25,10 +25,17 @@ class LinterJscs extends Linter
     if config
       @cmd += " -c #{config}"
 
-    atom.config.observe 'linter-jscs.jscsExecutablePath', =>
-      @executablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
+    atom.config.observe 'linter-jscs.jscsExecutablePath', @formatShellCmd
+    atom.config.observe 'linter-jscs.nodeExecutablePath', @formatShellCmd
+
+  formatShellCmd: =>
+    nodeExecutablePath = atom.config.get 'linter-jscs.nodeExecutablePath'
+    jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
+    @executablePath = "#{nodeExecutablePath} #{jscsExecutablePath}"
+
 
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
+    atom.config.unobserve 'linter-jscs.nodeExecutablePath'
 
 module.exports = LinterJscs
