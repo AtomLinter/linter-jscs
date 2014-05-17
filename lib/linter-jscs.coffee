@@ -36,7 +36,7 @@ class LinterJscs extends Linter
   processMessage: (xml, callback) ->
     parseString xml, (err, messagesUnprocessed) =>
       return err if err
-      messages = messagesUnprocessed.checkstyle.file[0].error.map (message) =>
+      messages = messagesUnprocessed.checkstyle.file[0].error?.map (message) =>
         message: message.$.message
         line: message.$.line
         col: message.$.column
