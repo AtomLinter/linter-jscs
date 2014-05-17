@@ -1,4 +1,8 @@
-linterPath = atom.packages.getLoadedPackage("linter").path
+{parseString} = require 'xml2js'
+
+{Range} = require 'atom'
+
+linterPath = atom.packages.getLoadedPackage('linter').path
 Linter = require "#{linterPath}/lib/linter"
 findFile = require "#{linterPath}/lib/util"
 
@@ -13,9 +17,6 @@ class LinterJscs extends Linter
   cmd: 'jscs -r checkstyle'
 
   linterName: 'jscs'
-
-  # A regex pattern used to extract information from the executable's output.
-  regex: 'line="(?<line>[0-9]+)" column="(?<col>[0-9]+).+?message="(?<message>.+)" s'
 
   isNodeExecutable: yes
 
@@ -32,6 +33,17 @@ class LinterJscs extends Linter
     jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
     @executablePath = jscsExecutablePath
 
+  processMessage: (xml, callback) ->
+    parseString xml, (err, messagesUnprocessed) =>
+      return err if err
+      messages = messagesUnprocessed.checkstyle.file[0].error.map (message) =>
+        message: message.$.message
+        line: message.$.line
+        col: message.$.column
+        range: new Range([message.$.line - 1, message.$.column], [message.$.line - 1, message.$.column + 1])
+        level: message.$.severity
+        linter: @linterName
+      callback messages
 
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
