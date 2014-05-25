@@ -2,7 +2,7 @@
   "name": "linter-jscs",
   "main": "./lib/init",
   "linter-package": true,
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Linter plugin for JavaScript, using JSCS",
   "activationEvents": [],
   "repository": "https://github.com/AtomLinter/linter-jscs",
