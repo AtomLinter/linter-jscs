@@ -13,5 +13,8 @@
   "dependencies": {
     "extendonclass": "~1.0.0",
     "jscs": "~1.3.0"
+  },
+  "packageDependencies": {
+    "linter": "~0.4.0"
   }
 }
