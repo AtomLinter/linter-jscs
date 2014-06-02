@@ -1,13 +1,8 @@
 path = require 'path'
 
-if process.platform is 'win32'
-  jscsExecutablePath = path.join __dirname, '..', 'node_modules', 'jscs', 'bin'
-else
-  jscsExecutablePath = path.join __dirname, '..', 'node_modules', '.bin'
-
 module.exports =
   configDefaults:
-    jscsExecutablePath: jscsExecutablePath
+    jscsExecutablePath: path.join __dirname, '..', 'node_modules', 'jscs', 'bin'
 
   activate: ->
     console.log 'activate linter-jscs'
