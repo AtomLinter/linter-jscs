@@ -47,8 +47,8 @@ class LinterJscs extends Linter
 
   buildCmd: =>
     @cmd = 'jscs -r checkstyle'
-    @cmd = "#{@cmd} -c #{@config}" if @config
-    @cmd = "#{@cmd} -p #{@preset}" if @preset
+    @cmd = "#{@cmd} -c \"#{@config}\"" if @config
+    @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
 
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
