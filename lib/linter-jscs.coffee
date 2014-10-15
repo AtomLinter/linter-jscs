@@ -19,6 +19,9 @@ class LinterJscs extends Linter
 
   # A string to indicate using jscs preset, not use preset if empty
   preset: ''
+  
+  # A boolean to indicate to parse the code as ES6 using the harmony version of the esprima parser
+  esnext: false
 
   # A string to indicate using jscs config
   config: ''
@@ -35,6 +38,7 @@ class LinterJscs extends Linter
 
     atom.config.observe 'linter-jscs.jscsExecutablePath', @formatShellCmd
     atom.config.observe 'linter-jscs.preset', @updatePreset
+    atom.config.observe 'linter-jscs.esnext', @updateEsnext
 
   formatShellCmd: =>
     jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
@@ -44,11 +48,17 @@ class LinterJscs extends Linter
     @preset = preset
     console.log "Use JSCS preset [#{@preset}]" if atom.inDevMode()
     @buildCmd()
+    
+  updateEsnext: (esnext) =>
+    @esnext = esnext
+    console.log "Use JSCS esnext" if atom.inDevMode()
+    @buildCmd()
 
   buildCmd: =>
     @cmd = 'jscs -r checkstyle'
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
+    @cmd = "#{@cmd} -e" if @esnext
 
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
