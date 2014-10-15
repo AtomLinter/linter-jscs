@@ -11,7 +11,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "extendonclass": "~1.0.0",
-    "jscs": "^1.5.0"
+    "extendonclass": "~1.0.1",
+    "jscs": "^1.7.1"
   }
 }
