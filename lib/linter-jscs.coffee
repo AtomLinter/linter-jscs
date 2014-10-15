@@ -20,6 +20,9 @@ class LinterJscs extends Linter
   # A string to indicate using jscs preset, not use preset if empty
   preset: ''
 
+  # A boolean to indicate to prepends the name of the offending rule to all error messages.
+  verbose: false
+  
   # A string to indicate using jscs config
   config: ''
 
@@ -35,6 +38,7 @@ class LinterJscs extends Linter
 
     atom.config.observe 'linter-jscs.jscsExecutablePath', @formatShellCmd
     atom.config.observe 'linter-jscs.preset', @updatePreset
+    atom.config.observe 'linter-jscs.verbose', @updateVerbose
 
   formatShellCmd: =>
     jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
@@ -44,11 +48,17 @@ class LinterJscs extends Linter
     @preset = preset
     console.log "Use JSCS preset [#{@preset}]" if atom.inDevMode()
     @buildCmd()
+    
+  updateVerbose: (verbose) =>
+    @verbose = verbose
+    console.log "Use JSCS verbose" if atom.inDevMode()
+    @buildCmd()
 
   buildCmd: =>
     @cmd = 'jscs -r checkstyle'
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
+    @cmd = "#{@cmd} -v" if @verbose
 
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
