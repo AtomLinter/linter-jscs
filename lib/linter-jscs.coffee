@@ -29,12 +29,21 @@ class LinterJscs extends Linter
     super editor
 
     @config = findFile @cwd, ['.jscsrc', '.jscs.json']
+    @config = @jscsConf() unless @config
     console.log "Use JSCS config file [#{@config}]" if atom.inDevMode()
 
     @buildCmd()
 
     atom.config.observe 'linter-jscs.jscsExecutablePath', @formatShellCmd
     atom.config.observe 'linter-jscs.preset', @updatePreset
+
+  jscsConf: =>
+    pkgConf = findFile @cwd, "package.json"
+    if pkgConf
+      console.log 'found', pkgConf
+      try
+        return pkgConf if typeof require(pkgConf).jscsConfig is 'object'
+      catch e then return
 
   formatShellCmd: =>
     jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
