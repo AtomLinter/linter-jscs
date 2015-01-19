@@ -3,7 +3,7 @@ JSCS Linter
 
 > JSCS — JavaScript Code Style is a code style checker. You can configure jscs for your project in detail using over 60 validation rules. See [mdevils/node-jscs](https://github.com/mdevils/node-jscs) for more informations about JSCS.
 
-This package will lint your `.js` opened filed in Atom through [jscs linter](https://github.com/mdevils/node-jscs). **It will lint on edit and/or on save**, so you'll see instantly if your code is sticking your code conventions/style.
+This package will lint your `.js` or `.jsx` opened files in Atom through [jscs linter](https://github.com/mdevils/node-jscs). **It will lint on edit and/or on save**, so you'll see instantly if your code is sticking your code conventions/style.
 
 A gif is better than everything:
 

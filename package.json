@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "extendonclass": "~1.0.0",
-    "jscs": "^1.5.0"
+    "jscs": "^1.10.0"
   }
 }
