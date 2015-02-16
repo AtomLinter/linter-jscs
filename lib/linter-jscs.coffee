@@ -35,6 +35,7 @@ class LinterJscs extends Linter
 
     atom.config.observe 'linter-jscs.jscsExecutablePath', @formatShellCmd
     atom.config.observe 'linter-jscs.preset', @updatePreset
+    atom.config.observe 'linter-jscs.harmony', @updateHarmony
 
   formatShellCmd: =>
     jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
@@ -45,12 +46,20 @@ class LinterJscs extends Linter
     console.log "Use JSCS preset [#{@preset}]" if atom.inDevMode()
     @buildCmd()
 
+  updateHarmony: (harmony) =>
+    @harmony = harmony
+    console.log "Using harmony `--esnext`" if atom.inDevMode()
+    @buildCmd()
+
   buildCmd: =>
     @cmd = 'jscs -r checkstyle'
+    @cmd = "#{@cmd} --esnext" if @harmony
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
 
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
+    atom.config.unobserve 'linter-jscs.preset'
+    atom.config.unobserve 'linter-jscs.harmony'
 
 module.exports = LinterJscs
