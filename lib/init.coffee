@@ -17,7 +17,7 @@ module.exports =
     verbose:
       type: 'boolean'
       default: false
-      description: 'Prepends the name of the offending rule to all error messages/'
+      description: 'Prepends the name of the offending rule to all error messages.'
 
   activate: ->
     console.log 'activate linter-jscs'
