@@ -25,34 +25,26 @@ class LinterJscs extends Linter
 
   isNodeExecutable: yes
 
+  options: ['executablePath', 'preset', 'harmony', 'verbose']
+
   constructor: (editor) ->
     super editor
 
     @config = findFile @cwd, ['.jscsrc', '.jscs.json']
     console.log "Use JSCS config file [#{@config}]" if atom.inDevMode()
 
-    @buildCmd()
+    # Load options from linter-jscs
+    for option in @options
+      atom.config.observe "linter-jscs.#{option}", @updateOption.bind(@, option)
 
-    atom.config.observe 'linter-jscs.jscsExecutablePath', @formatShellCmd
-    atom.config.observe 'linter-jscs.preset', @updatePreset
-    atom.config.observe 'linter-jscs.harmony', @updateHarmony
-
-  formatShellCmd: =>
-    jscsExecutablePath = atom.config.get 'linter-jscs.jscsExecutablePath'
-    @executablePath = jscsExecutablePath
-
-  updatePreset: (preset) =>
-    @preset = preset
-    console.log "Use JSCS preset [#{@preset}]" if atom.inDevMode()
-    @buildCmd()
-
-  updateHarmony: (harmony) =>
-    @harmony = harmony
-    console.log "Using harmony `--esprima=esprima-fb`" if atom.inDevMode()
+  updateOption: (option) =>
+    @[option] = atom.config.get "linter-jscs.#{option}"
+    console.log "Updating `linter-jscs` #{option} to #{@[option]}" if atom.inDevMode()
     @buildCmd()
 
   buildCmd: =>
     @cmd = 'jscs -r checkstyle'
+    @cmd = "#{@cmd} --verbose" if @verbose
     @cmd = "#{@cmd} --esprima=esprima-fb" if @harmony
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
@@ -61,8 +53,7 @@ class LinterJscs extends Linter
     match.message
 
   destroy: ->
-    atom.config.unobserve 'linter-jscs.jscsExecutablePath'
-    atom.config.unobserve 'linter-jscs.preset'
-    atom.config.unobserve 'linter-jscs.harmony'
+    for option in @options
+      atom.config.unobserve "linter-jscs.#{option}"
 
 module.exports = LinterJscs
