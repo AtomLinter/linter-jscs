@@ -57,6 +57,9 @@ class LinterJscs extends Linter
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
 
+  formatMessage: (match) ->
+    match.message
+
   destroy: ->
     atom.config.unobserve 'linter-jscs.jscsExecutablePath'
     atom.config.unobserve 'linter-jscs.preset'
