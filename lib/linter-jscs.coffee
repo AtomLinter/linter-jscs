@@ -6,7 +6,7 @@ class LinterJscs extends Linter
 
   # The syntax that the linter handles. May be a string or
   # list/tuple of strings. Names should be all lowercase.
-  @syntax: 'source.js'
+  @syntax: ['source.js', 'source.js.jsx']
 
   # A string, list, tuple or callable that returns a string, list or tuple,
   # containing the command line (with arguments) used to lint.
@@ -48,12 +48,12 @@ class LinterJscs extends Linter
 
   updateHarmony: (harmony) =>
     @harmony = harmony
-    console.log "Using harmony `--esnext`" if atom.inDevMode()
+    console.log "Using harmony `--esprima=esprima-fb`" if atom.inDevMode()
     @buildCmd()
 
   buildCmd: =>
     @cmd = 'jscs -r checkstyle'
-    @cmd = "#{@cmd} --esnext" if @harmony
+    @cmd = "#{@cmd} --esprima=esprima-fb" if @harmony
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
 

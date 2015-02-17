@@ -13,7 +13,7 @@ module.exports =
     harmony:
       type: 'boolean'
       default: false
-      description: 'Attempts to parse your code as ES6 using the harmony version of the esprima parser.'
+      description: 'Enable ES6 and JSX parsing syntax with `--esprima=fb-esprima` CLI option.'
 
   activate: ->
     console.log 'activate linter-jscs'
