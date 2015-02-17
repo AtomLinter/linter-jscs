@@ -3,6 +3,7 @@
 * Changed the way linter messages are parsed. ([#21](https://github.com/AtomLinter/linter-jscs/pull/21))
 * Added JSX support with `esprima-fb`, enable `harmony` option and install [Atom React](http://orktes.github.io/atom-react/) package.
 * Added `verbose` option, prepends the name of the offending rule to all error messages.
+* Added support of `package.json` config file ([#28](https://github.com/AtomLinter/linter-jscs/issues/28)).
 
 # v1.5.0
 ### Features

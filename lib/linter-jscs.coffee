@@ -30,7 +30,20 @@ class LinterJscs extends Linter
   constructor: (editor) ->
     super editor
 
-    @config = findFile @cwd, ['.jscsrc', '.jscs.json']
+    # Find the nearest possible config file
+    @config = findFile @cwd, ['.jscsrc', '.jscs.json', 'package.json']
+    # We need to check if the config file is `package.json`
+    # it's a specific object on this config file that we need
+    if (@config.split('/')[@config.split('/').length - 1]) is 'package.json'
+      # Check that we have an `jscsConfig` object on `package.json`
+      # Or we will try to search for `.jscsrc` and `.jscs.json` only
+      try
+        throw new Error if typeof require(@config)?.jscsConfig? isnt 'object'
+      catch
+        # Try to find the nearest `.jscsrc` or `.jscs.json`
+        # if there's an error while requiring the file
+        # or if the `jscsConfig` isnt existing
+        @config = findFile @cwd, ['.jscsrc', '.jscs.json']
     console.log "Use JSCS config file [#{@config}]" if atom.inDevMode()
 
     # Load options from linter-jscs
