@@ -48,7 +48,7 @@ class LinterJscs extends Linter
 
     # Load options from linter-jscs
     for option in @options
-      atom.config.observe "linter-jscs.#{option}", @updateOption.bind(@, option)
+      atom.config.observe "linter-jscs.#{option}", @updateOption.bind(this, option)
 
   updateOption: (option) =>
     @[option] = atom.config.get "linter-jscs.#{option}"
