@@ -18,6 +18,10 @@ module.exports =
       type: 'boolean'
       default: false
       description: 'Prepends the name of the offending rule to all error messages.'
+    onlyConfig:
+      type: 'boolean'
+      default: false
+      description: 'Disable linter if there is no config file found for the linter.'
 
   activate: ->
     console.log 'activate linter-jscs'
