@@ -9,7 +9,7 @@ module.exports =
     preset:
       type: 'string'
       default: 'airbnb'
-      enum: ['airbnb', 'crockford', 'google', 'jquery', 'mdcs', 'wikimedia', 'yandex']
+      enum: ['airbnb', 'crockford', 'google', 'grunt', 'jquery', 'mdcs', 'wikimedia', 'yandex']
     harmony:
       type: 'boolean'
       default: false
