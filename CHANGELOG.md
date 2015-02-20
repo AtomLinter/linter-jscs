@@ -1,3 +1,7 @@
+# next release
+### Features
+* Add grunt preset to configuration
+
 # v1.6.0
 ### Improvements
 * Changed the way linter messages are parsed. ([#21](https://github.com/AtomLinter/linter-jscs/pull/21))
