@@ -36,7 +36,7 @@ class LinterJscs extends Linter
     @config = findFile @cwd, ['.jscsrc', '.jscs.json', 'package.json']
     # We need to check if the config file is `package.json`
     # it's a specific object on this config file that we need
-    if (@config.split(path.sep)[@config.split(path.sep).length - 1]) is 'package.json'
+    if (@config?.split?(path.sep)[@config?.split?(path.sep).length - 1]) is 'package.json'
       # Check that we have an `jscsConfig` object on `package.json`
       # Or we will try to search for `.jscsrc` and `.jscs.json` only
       try
