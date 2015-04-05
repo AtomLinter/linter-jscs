@@ -1,5 +1,7 @@
 path = require 'path'
 
+{CompositeDisposable} = require 'atom'
+
 linterPath = atom.packages.getLoadedPackage("linter").path
 Linter = require "#{linterPath}/lib/linter"
 findFile = require "#{linterPath}/lib/util"
@@ -32,6 +34,8 @@ class LinterJscs extends Linter
   constructor: (editor) ->
     super editor
 
+    @disposables = new CompositeDisposable
+
     # Find the nearest possible config file
     @config = findFile @cwd, ['.jscsrc', '.jscs.json', 'package.json']
     # We need to check if the config file is `package.json`
@@ -50,7 +54,7 @@ class LinterJscs extends Linter
 
     # Load options from linter-jscs
     for option in @options
-      atom.config.observe "linter-jscs.#{option}", @updateOption.bind(this, option)
+      @disposables.add atom.config.observe "linter-jscs.#{option}", @updateOption.bind(this, option)
 
   updateOption: (option) =>
     @[option] = atom.config.get "linter-jscs.#{option}"
@@ -73,7 +77,6 @@ class LinterJscs extends Linter
     super path, next
 
   destroy: ->
-    for option in @options
-      atom.config.unobserve "linter-jscs.#{option}"
+    @disposables.dispose()
 
 module.exports = LinterJscs
