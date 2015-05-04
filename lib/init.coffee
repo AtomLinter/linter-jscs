@@ -22,6 +22,11 @@ module.exports =
       type: 'boolean'
       default: false
       description: 'Disable linter if there is no config file found for the linter.'
+    messageType:
+      type: 'string'
+      default: 'info'
+      enum: ['info', 'warning', 'error']
+      description: 'Setup type of message (info(blue), warning(yellow), error(red)).'
 
   activate: ->
     console.log 'activate linter-jscs'
