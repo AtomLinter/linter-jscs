@@ -13,7 +13,7 @@ module.exports =
     harmony:
       type: 'boolean'
       default: false
-      description: 'Enable ES6 and JSX parsing syntax with `--esprima=fb-esprima` CLI option.'
+      description: 'Enable ES6 and JSX parsing syntax with `--esprima=esprima-fb` CLI option.'
     verbose:
       type: 'boolean'
       default: false
