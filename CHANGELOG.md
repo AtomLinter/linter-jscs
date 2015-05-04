@@ -1,3 +1,11 @@
+# v1.8.0 - 05/04/2015
+### Features
+* Can select type of lint message ([#50](https://github.com/AtomLinter/linter-jscs/pull/50))
+
+### Bug Fixes
+* Fix deprecation warning ([#48](https://github.com/AtomLinter/linter-jscs/pull/48))
+* Fix harmony setting description ([#46](https://github.com/AtomLinter/linter-jscs/pull/46))
+
 # v1.7.0 - 02/25/2015
 ### Features
 * Add option to disable linter when no config file is found ([#18](https://github.com/AtomLinter/linter-jscs/issues/18))
