@@ -21,6 +21,10 @@ A gif is better than everything:
 * `$ apm install linter` (if you don't have [AtomLinter/Linter](https://github.com/AtomLinter/Linter) installed).
 * `$ apm install linter-jscs`
 
+## Notes
+
+If you want to use `jscs` autoformating feature, you will need this plugin: https://atom.io/packages/jscs-fixer
+
 ## Other available linters
 - [linter-phpcs](https://atom.io/packages/linter-phpcs) - Linter plugin for PHP, using phpcs.
 - [linter-phpmd](https://atom.io/packages/linter-phpmd) - Linter plugin for PHP, using phpmd.
@@ -30,6 +34,3 @@ A gif is better than everything:
 - [linter-csslint](https://atom.io/packages/linter-csslint) Linter plugin for CSS, using csslint.
 - [linter-rubocop](https://atom.io/packages/linter-rubocop) - Linter plugin for Ruby, using rubocop.
 - [linter-tslint](https://atom.io/packages/linter-tslint) Linter plugin for TypeScript, using tslint.
-
-## Donation
-[![Share the love!](https://chewbacco-stuff.s3.amazonaws.com/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KXUYS4ARNHCN8)
