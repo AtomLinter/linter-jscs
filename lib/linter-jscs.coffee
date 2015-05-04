@@ -28,7 +28,7 @@ class LinterJscs extends Linter
   config: ''
 
   # A string to setup type of message (don't understand why default isn't work)
-  defaultLevel: atom.config.get "linter-jscs.messageType" or 'info'
+  defaultLevel: atom.config.get 'linter-jscs.messageType' or 'info'
 
   isNodeExecutable: yes
 
