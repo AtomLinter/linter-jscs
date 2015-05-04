@@ -4,7 +4,7 @@
   "linter-package": true,
   "version": "1.10.0",
   "description": "Linter plugin for JavaScript, using JSCS",
-  "activationEvents": [],
+  "activationCommands": {},
   "repository": "https://github.com/AtomLinter/linter-jscs",
   "license": "MIT",
   "engines": {
