@@ -1,4 +1,4 @@
-# v1.8.0 - 05/04/2015
+# v1.11.0 - 05/04/2015
 ### Features
 * Can select type of lint message ([#50](https://github.com/AtomLinter/linter-jscs/pull/50))
 
