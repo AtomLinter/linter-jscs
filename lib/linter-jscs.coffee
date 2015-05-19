@@ -71,12 +71,10 @@ class LinterJscs extends Linter
     @cmd = "#{@cmd} -c #{@config}" if @config
     @cmd = "#{@cmd} -p #{@preset}" if @preset and not @config
 
-  formatMessage: (match) ->
-    match.message
-
   lintFile: (path, next) =>
     condition = (@config and @onlyConfig) or !@onlyConfig
     path = if condition then path else path: ''
+
     super path, next
 
   destroy: ->
