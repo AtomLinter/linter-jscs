@@ -19,7 +19,7 @@ class LinterJscs extends Linter
   linterName: 'jscs'
 
   # A regex pattern used to extract information from the executable's output.
-  regex: 'line="(?<line>[0-9]+)" column="(?<col>[0-9]+).+?message="(?<message>.+)" s'
+  regex: 'line="(?<line>[0-9]+)" column="(?<col>[0-9]+)" severity="(?<level>.+)".+?message="(?<message>.+)" s'
 
   # A string to indicate using jscs preset, not use preset if empty
   preset: ''
