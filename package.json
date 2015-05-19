@@ -11,8 +11,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "esprima-fb": "^14001.1.0-dev-harmony-fb",
-    "extendonclass": "~1.0.0",
-    "jscs": "^1.12.0"
+    "esprima-fb": "^15001.1.0-dev-harmony-fb",
+    "jscs": "^1.13.1"
   }
 }
