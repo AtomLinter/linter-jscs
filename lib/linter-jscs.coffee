@@ -73,7 +73,7 @@ class LinterJscs extends Linter
 
   lintFile: (path, next) =>
     condition = (@config and @onlyConfig) or !@onlyConfig
-    path = if condition then path else path: ''
+    path = if condition then @cwd + path.substring(path.lastIndexOf('/')) else path: ''
 
     super path, next
 
