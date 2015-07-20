@@ -9,7 +9,7 @@ module.exports =
     preset:
       type: 'string'
       default: 'airbnb'
-      enum: ['airbnb', 'crockford', 'google', 'grunt', 'jquery', 'mdcs', 'wikimedia', 'yandex']
+      enum: ['airbnb', 'crockford', 'google', 'grunt', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'yandex']
       description: 'Preset option is ignored if a config file is found for the linter.'
     harmony:
       type: 'boolean'
