@@ -1,3 +1,10 @@
+# v1.13.0 - 21/07/2015
+### Features
+* Add `node-style` preset ([#68](https://github.com/AtomLinter/linter-jscs/pull/68))
+
+### Bug fixes
+* Support `excludeFiles` rules ([#57](https://github.com/AtomLinter/linter-jscs/pull/57))
+
 # v1.11.0 - 05/04/2015
 ### Features
 * Can select type of lint message ([#50](https://github.com/AtomLinter/linter-jscs/pull/50))
