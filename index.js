@@ -15,7 +15,7 @@ export let config = {
     title: 'Harmony',
     type: 'boolean',
     default: false,
-    description: 'Enable ES6 and JSX parsing syntax with `--esprima=esprima-fb` CLI option.'
+    description: 'Enable ES6 and JSX parsing syntax.'
   },
   verbose: {
     title: 'Verbose',
@@ -37,11 +37,11 @@ export let config = {
   }
 };
 
-const preset      = () => atom.config.get('linter-jscs.preset');
-const harmony     = () => atom.config.get('linter-jscs.harmony');
-const verbose     = () => atom.config.get('linter-jscs.verbose');
-const onlyConfig  = () => atom.config.get('linter-jscs.onlyConfig');
-const fixOnSave   = () => atom.config.get('linter-jscs.fixOnSave');
+const preset     = () => atom.config.get('linter-jscs.preset');
+const harmony    = () => atom.config.get('linter-jscs.harmony');
+const verbose    = () => atom.config.get('linter-jscs.verbose');
+const onlyConfig = () => atom.config.get('linter-jscs.onlyConfig');
+const fixOnSave  = () => atom.config.get('linter-jscs.fixOnSave');
 
 let jscs;
 let observer;
@@ -66,7 +66,7 @@ export const activate = () => {
 
   if (config) {
     try {
-      jscs.configure(require(jscsrc));
+      jscs.configure(require(config));
     } catch (e) {
       isMissingConfig = true;
       jscs.configure(options);
