@@ -3,6 +3,7 @@
 import JSCS from 'jscs';
 import { Range } from 'atom';
 import { findFile } from 'atom-linter';
+import { readFileSync } from 'fs';
 
 export default class LinterJSCS {
 
@@ -94,18 +95,21 @@ export default class LinterJSCS {
 
         if (config) {
           try {
-            this.jscs.configure(require(config));
+            const rawConfig = readFileSync(config, { encoding: 'utf8' });
+            let parsedConfig = JSON.parse(rawConfig);
 
-            // Don't cache config file, user can have changed
-            // the configuration between two lints
-            delete require.cache[require.resolve(config)];
+            if (config.indexOf('package.json') > -1) {
+              if (parsedConfig.jscsConfig) {
+                parsedConfig = parsedConfig.jscsConfig;
+              } else {
+                throw new Error('No `jscsConfig` key in `package.json`');
+              }
+            }
+
+            this.jscs.configure(parsedConfig);
           } catch (e) {
-            // Warn user with errors in his jscs configuration
-            atom.notifications
-              .addWarning(
-                'Error while loading `jscs` config',
-                { detail: e, dismissable: true }
-              );
+            console.warn('Error while loading jscs config file');
+            console.warn(e);
 
             this.isMissingConfig = true;
             this.jscs.configure(options);
