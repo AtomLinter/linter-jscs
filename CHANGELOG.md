@@ -1,3 +1,8 @@
+# v2.0.1 - 28/07/2015
+### Bug fixes
+* Error with `esnext` option
+* Bug with `package.json` and `.jscsrc` config not correctly loaded
+
 # v2.0.0 - 28/07/2015
 ### Features
 * Rewrite to ES6 ([#71](https://github.com/AtomLinter/linter-jscs/pull/71))
