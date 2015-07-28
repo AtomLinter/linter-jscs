@@ -9,7 +9,8 @@
     "atom": ">=1.0.0"
   },
   "dependencies": {
-    "jscs": "^1.13.1"
+    "atom-linter": "^3.0.0",
+    "jscs": "^2.0.0"
   },
   "providedServices": {
     "linter": {

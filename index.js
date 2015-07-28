@@ -1,7 +1,8 @@
 'use babel';
 
+import JSCS from 'jscs';
 import { Range } from 'atom';
-import JSCS      from 'jscs';
+import { findFile } from 'atom-linter';
 
 export default class LinterJSCS {
 
@@ -36,6 +37,12 @@ export default class LinterJSCS {
       description: 'Fix JavaScript on save',
       type: 'boolean',
       default: false
+    },
+    displayAs: {
+      title: 'Display errors as',
+      type: 'string',
+      default: 'error',
+      enum: ['error', 'warning']
     }
   }
 
@@ -59,34 +66,11 @@ export default class LinterJSCS {
     return atom.config.get('linter-jscs.fixOnSave');
   }
 
+  static get displayAs() {
+    return atom.config.get('linter-jscs.displayAs');
+  }
+
   static activate() {
-
-    this.jscs = new JSCS();
-    this.jscs.registerDefaultRules();
-
-    let directory = atom.project.getDirectories().shift();
-    let jscsrc    = directory ? directory.resolve('.jscsrc') : null;
-    let jscsjson  = directory ? directory.resolve('.jscs.json') : null;
-    let package   = directory ? directory.resolve('package.json') : null;
-    let config    = jscsrc || jscsjson || package;
-
-    let options = {
-      esnext: this.harmony,
-      preset: this.preset,
-      verbose: this.verbose
-    };
-
-    if (config) {
-      try {
-        this.jscs.configure(require(config));
-      } catch (e) {
-        this.isMissingConfig = true;
-        this.jscs.configure(options);
-      }
-    } else {
-      this.jscs.configure(options);
-    }
-
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
         if (this.fixOnSave) {
@@ -106,25 +90,66 @@ export default class LinterJSCS {
       scope: 'file',
       lintOnFly: true,
       lint: (editor) => {
+        // We need re-initialize JSCS before every lint
+        // or it will looses the errors, didn't trace the error
+        // must be something with new 2.0.0 JSCS
+        this.jscs = new JSCS();
+        this.jscs.registerDefaultRules();
 
-        if (this.isMissingConfig && this.onlyConfig) {
-          return [];
+        const filePath = editor.getPath();
+        const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
+        const config = findFile(filePath, configFiles);
+
+        const options = {
+          esnext: this.harmony,
+          preset: this.preset,
+          verbose: this.verbose
+        };
+
+        if (config) {
+          try {
+            this.jscs.configure(require(config));
+
+            // Don't cache config file, user can have changed
+            // the configuration between two lints
+            delete require.cache[require.resolve(config)];
+          } catch (e) {
+            // Warn user with errors in his jscs configuration
+            atom.notifications
+              .addWarning(
+                'Error while loading `jscs` config',
+                { detail: e, dismissable: true }
+              );
+
+            this.isMissingConfig = true;
+            this.jscs.configure(options);
+          }
+        } else {
+          this.jscs.configure(options);
         }
 
-        let path   = editor.getPath();
-        let text   = editor.getText();
-        let errors = this.jscs.checkString(text, path).getErrorList();
+        // We don't have a config file present in project directory
+        // let's return an empty array of errors
+        if (this.isMissingConfig && this.onlyConfig) return [];
 
-        return errors.map((error) => {
-          return {
-            type: error.rule,
-            text: error.message,
-            filePath: error.filename,
-            range: new Range(
-              [error.line - 1, error.column - 1],
-              [error.line - 1, error.column - 1]
-            )
-          }
+        const text = editor.getText();
+        const errors = this.jscs
+          .checkString(text, path)
+          .getErrorList();
+
+        return errors.map(({ rule, message, line, column }) => {
+
+          // Calculate range to make the error whole line
+          // without the indentation at begining of line
+          const indentLevel = editor.indentationForBufferRow(line - 1);
+          const startCol = editor.getTabLength() * indentLevel;
+          const endCol = editor.getBuffer().lineLengthForRow(line - 1);
+          const range = [[line - 1, startCol], [line - 1, endCol]];
+
+          const type = this.displayAs;
+          const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
+
+          return { type, html, filePath, range };
         });
       }
     };
