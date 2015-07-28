@@ -14,15 +14,8 @@ export default class LinterJSCS {
       default: 'airbnb',
       enum: ['airbnb', 'crockford', 'google', 'grunt', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'yandex']
     },
-    harmony: {
-      title: 'Harmony',
-      type: 'boolean',
-      default: false,
-      description: 'Enable ES6 and JSX parsing syntax.'
-    },
-    verbose: {
-      title: 'Verbose',
-      description: 'Prepends the name of the offending rule to all error messages.',
+    esnext: {
+      description: 'Attempts to parse your code as ES6+, JSX, and Flow using the babel-jscs package as the parser.',
       type: 'boolean',
       default: false
     },
@@ -52,10 +45,6 @@ export default class LinterJSCS {
 
   static get harmony() {
     return atom.config.get('linter-jscs.harmony');
-  }
-
-  static get verbose() {
-    return atom.config.get('linter-jscs.verbose');
   }
 
   static get onlyConfig() {
@@ -100,11 +89,8 @@ export default class LinterJSCS {
         const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
         const config = findFile(filePath, configFiles);
 
-        const options = {
-          esnext: this.harmony,
-          preset: this.preset,
-          verbose: this.verbose
-        };
+        // Options passed to `jscs` from package configuration
+        const options = { esnext: this.esnext, preset: this.preset };
 
         if (config) {
           try {
@@ -156,15 +142,12 @@ export default class LinterJSCS {
   }
 
   static fixString() {
+    if (!this.isMissingConfig && !this.onlyConfig) {
+      const editor = atom.workspace.getActiveTextEditor();
+      const path = editor.getPath();
+      const text = editor.getText();
 
-    let editor = atom.workspace.getActiveTextEditor();
-    let path   = editor.getPath();
-    let text   = editor.getText();
-
-    if (this.isMissingConfig && this.onlyConfig) {
-      return;
+      return editor.setText(this.jscs.fixString(text, path).output);
     }
-
-    editor.setText(this.jscs.fixString(text, path).output);
   }
 };
