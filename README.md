@@ -6,9 +6,11 @@ JSCS Linter
 This package will lint your `.js` and `.jsx` opened filed in Atom through [jscs linter](https://github.com/mdevils/node-jscs). **It will lint on edit and/or on save**, so you'll see instantly if your code is sticking your code conventions/style.
 
 * Support `.jscs.json`, `.jscsrc` and `package.json` configurations files
-* Switch between all `jscs` preset with ease.
-* Enable `harmony` option for having [esprima-fb](https://www.npmjs.com/package/esprima-fb) parsing ES6 and JSX syntax, which is disabled by default.
-* Install [React package](https://atom.io/packages/react) to have `.jsx` files syntax recognized, and possibly linted by the linter.
+* Switch between `jscs` preset with ease.
+* Enable `esnext` for babel ES6/ES7/JSX syntax support.
+* Can autofix your file to the codestyle.
+
+(Install [React package](https://atom.io/packages/react) to have `.jsx` files syntax recognized, and possibly linted by the linter)
 
 A gif is better than everything:
 
@@ -20,10 +22,6 @@ A gif is better than everything:
 
 * `$ apm install linter` (if you don't have [AtomLinter/Linter](https://github.com/AtomLinter/Linter) installed).
 * `$ apm install linter-jscs`
-
-## Notes
-
-If you want to use `jscs` autoformating feature, you will need this plugin: https://atom.io/packages/jscs-fixer
 
 ## Other available linters
 - [linter-phpcs](https://atom.io/packages/linter-phpcs) - Linter plugin for PHP, using phpcs.
