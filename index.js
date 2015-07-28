@@ -43,8 +43,8 @@ export default class LinterJSCS {
     return atom.config.get('linter-jscs.preset');
   }
 
-  static get harmony() {
-    return atom.config.get('linter-jscs.harmony');
+  static get esnext() {
+    return atom.config.get('linter-jscs.esnext');
   }
 
   static get onlyConfig() {
