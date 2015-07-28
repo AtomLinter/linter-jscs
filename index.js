@@ -124,7 +124,7 @@ export default class LinterJSCS {
 
         const text = editor.getText();
         const errors = this.jscs
-          .checkString(text, path)
+          .checkString(text, filePath)
           .getErrorList();
 
         return errors.map(({ rule, message, line, column }) => {
