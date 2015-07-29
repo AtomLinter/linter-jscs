@@ -81,15 +81,12 @@ export default class LinterJSCS {
 
     if (existsSync(package)) {
       let pkg = readFileSync(package, { encoding: 'utf8' });
-      console.log('package.json wa found');
       if (pkg.jscsConfig) {
-        console.log('package.json:jscsConfig');
         return pkg.jscsConfig;
       }
     }
 
     let configFile = findFile(filePath, configs);
-    console.log(configFile);
     if (configFile) {
       try {
         let json = readFileSync(configFile, { encoding: 'utf8' });
