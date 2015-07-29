@@ -3,7 +3,7 @@
 import JSCS from 'jscs';
 import { Range } from 'atom';
 import { findFile } from 'atom-linter';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 export default class LinterJSCS {
 
@@ -74,6 +74,36 @@ export default class LinterJSCS {
     this.observer.dispose();
   }
 
+  static getConfig(filePath) {
+
+    const package = __dirname + '/package.json';
+    const configs = ['.jscsrc', '.jscs.json'];
+
+    if (existsSync(package)) {
+      let pkg = readFileSync(package, { encoding: 'utf8' });
+      console.log('package.json wa found');
+      if (pkg.jscsConfig) {
+        console.log('package.json:jscsConfig');
+        return pkg.jscsConfig;
+      }
+    }
+
+    let configFile = findFile(filePath, configs);
+    console.log(configFile);
+    if (configFile) {
+      try {
+        let json = readFileSync(configFile, { encoding: 'utf8' });
+        return JSON.parse(json);
+      } catch (e) {
+        console.warn('Error while loading jscs config file');
+        console.warn(e);
+        this.isMissingConfig = true;
+      }
+    }
+
+    return null;
+  }
+
   static provideLinter() {
     return {
       grammarScopes: ['source.js', 'source.js.jsx'],
@@ -87,33 +117,12 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
-        const config = findFile(filePath, configFiles);
-
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
+        const config = this.getConfig(filePath);
 
         if (config) {
-          try {
-            const rawConfig = readFileSync(config, { encoding: 'utf8' });
-            let parsedConfig = JSON.parse(rawConfig);
-
-            if (config.indexOf('package.json') > -1) {
-              if (parsedConfig.jscsConfig) {
-                parsedConfig = parsedConfig.jscsConfig;
-              } else {
-                throw new Error('No `jscsConfig` key in `package.json`');
-              }
-            }
-
-            this.jscs.configure(parsedConfig);
-          } catch (e) {
-            console.warn('Error while loading jscs config file');
-            console.warn(e);
-
-            this.isMissingConfig = true;
-            this.jscs.configure(options);
-          }
+          this.jscs.configure(config);
         } else {
           this.jscs.configure(options);
         }
