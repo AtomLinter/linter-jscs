@@ -93,7 +93,7 @@ export default class LinterJSCS {
         // Search for project config file
         let config = findFile(filePath, configFiles);
 
-        // Set config to `null` if `jscsConfig` is found in `package.json`
+        // Reset config if `jscsConfig` is not found in `package.json`
         if (config && config.indexOf('package.json') > -1) {
           const { jscsConfig } = require(config);
           if (!jscsConfig) config = null;
