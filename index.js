@@ -89,7 +89,21 @@ export default class LinterJSCS {
 
         const filePath = editor.getPath();
         const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
-        const config = findFile(filePath, configFiles);
+
+        // Search for project config file
+        let config = findFile(filePath, configFiles);
+
+        // Set config to `null` if `jscsConfig` is found in `package.json`
+        if (config && config.indexOf('package.json') > -1) {
+          const { jscsConfig } = require(config);
+          if (!jscsConfig) config = null;
+        }
+
+        // Search for home config file
+        if (!config) {
+          const homeDir = require('user-home');
+          if (homeDir) config = findFile(homeDir, configFiles);
+        }
 
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
@@ -108,9 +122,13 @@ export default class LinterJSCS {
             }
 
             this.jscs.configure(parsedConfig);
-          } catch (e) {
-            console.warn('Error while loading jscs config file');
-            console.warn(e);
+          } catch (error) {
+            // Warn user only once
+            if (!this.warnLocalConfig) {
+              console.warn('[linter-jscs] No config found, or error while loading it.');
+              console.warn(error.stack);
+              this.warnLocalConfig = true;
+            }
 
             this.isMissingConfig = true;
             this.jscs.configure(options);
