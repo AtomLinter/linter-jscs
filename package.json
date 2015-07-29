@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "atom-linter": "^3.0.0",
-    "jscs": "^2.0.0"
+    "jscs": "^2.0.0",
+    "strip-json-comments": "^1.0.2"
   },
   "providedServices": {
     "linter": {

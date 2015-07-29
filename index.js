@@ -4,6 +4,7 @@ import JSCS from 'jscs';
 import { Range } from 'atom';
 import { findFile } from 'atom-linter';
 import { readFileSync } from 'fs';
+import stripJSONComments from 'strip-json-comments';
 
 export default class LinterJSCS {
 
@@ -96,7 +97,7 @@ export default class LinterJSCS {
         if (config) {
           try {
             const rawConfig = readFileSync(config, { encoding: 'utf8' });
-            let parsedConfig = JSON.parse(rawConfig);
+            let parsedConfig = JSON.parse(stripJSONComments(rawConfig));
 
             if (config.indexOf('package.json') > -1) {
               if (parsedConfig.jscsConfig) {
