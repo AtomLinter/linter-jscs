@@ -130,7 +130,8 @@ export default class LinterJSCS {
               this.warnLocalConfig = true;
             }
 
-            this.isMissingConfig = true;
+            // Reset config to null
+            config = null;
             this.jscs.configure(options);
           }
         } else {
@@ -139,7 +140,7 @@ export default class LinterJSCS {
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors
-        if (this.isMissingConfig && this.onlyConfig) return [];
+        if (!config && this.onlyConfig) return [];
 
         const text = editor.getText();
         const errors = this.jscs
