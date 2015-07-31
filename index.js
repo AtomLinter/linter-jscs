@@ -89,15 +89,18 @@ export default class LinterJSCS {
 
         const filePath = editor.getPath();
         const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
+        let config;
+        configFiles.some((configFile) => {
+          config = findFile(filePath, configFile);
 
-        // Search for project config file
-        let config = findFile(filePath, configFiles);
+          // Reset config if `jscsConfig` is not found in `package.json`
+          if (config && config.indexOf('package.json') > -1) {
+            const { jscsConfig } = require(config);
+            if (!jscsConfig) config = null;
+          }
 
-        // Reset config if `jscsConfig` is not found in `package.json`
-        if (config && config.indexOf('package.json') > -1) {
-          const { jscsConfig } = require(config);
-          if (!jscsConfig) config = null;
-        }
+          return !!config;
+        });
 
         // Search for home config file
         if (!config) {
