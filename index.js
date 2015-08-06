@@ -5,6 +5,7 @@ import { Range } from 'atom';
 import { findFile } from 'atom-linter';
 import { readFileSync } from 'fs';
 import stripJSONComments from 'strip-json-comments';
+let path = require('path');
 
 export default class LinterJSCS {
 
@@ -88,16 +89,26 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
+        let curPath = filePath;
+        let config = null;
         const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
 
         // Search for project config file
-        let config = findFile(filePath, configFiles);
+        do {
+          config = findFile(curPath, configFiles);
 
-        // Reset config if `jscsConfig` is not found in `package.json`
-        if (config && config.indexOf('package.json') > -1) {
-          const { jscsConfig } = require(config);
-          if (!jscsConfig) config = null;
-        }
+          // Reset config if `jscsConfig` is not found in `package.json`
+          if (config && config.indexOf('package.json') > -1) {
+            const { jscsConfig } = require(config);
+            if (!jscsConfig) {
+              let chunks = config.split(path.sep);
+              chunks.pop();
+              chunks.pop();
+              curPath = chunks.join(path.sep);
+              config = null;
+            }
+          }
+        } while (!config && curPath.split(path.sep).length > 0);
 
         // Search for home config file
         if (!config) {
