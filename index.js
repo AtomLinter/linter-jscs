@@ -1,10 +1,8 @@
 'use babel';
 
 import JSCS from 'jscs';
-import { Range } from 'atom';
-import { findFile } from 'atom-linter';
-import { readFileSync } from 'fs';
-import stripJSONComments from 'strip-json-comments';
+import path from 'path';
+import configFile from './node_modules/jscs/lib/cli-config';
 
 export default class LinterJSCS {
 
@@ -88,58 +86,12 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const configFiles = ['.jscsrc', '.jscs.json', 'package.json'];
-        let config;
-        configFiles.some((configFile) => {
-          config = findFile(filePath, configFile);
-
-          // Reset config if `jscsConfig` is not found in `package.json`
-          if (config && config.indexOf('package.json') > -1) {
-            const { jscsConfig } = require(config);
-            if (!jscsConfig) config = null;
-          }
-
-          return !!config;
-        });
-
-        // Search for home config file
-        if (!config) {
-          const homeDir = require('user-home');
-          if (homeDir) config = findFile(homeDir, configFiles);
-        }
+        const config = configFile.load(false, path.dirname(filePath));
 
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
 
-        if (config) {
-          try {
-            const rawConfig = readFileSync(config, { encoding: 'utf8' });
-            let parsedConfig = JSON.parse(stripJSONComments(rawConfig));
-
-            if (config.indexOf('package.json') > -1) {
-              if (parsedConfig.jscsConfig) {
-                parsedConfig = parsedConfig.jscsConfig;
-              } else {
-                throw new Error('No `jscsConfig` key in `package.json`');
-              }
-            }
-
-            this.jscs.configure(parsedConfig);
-          } catch (error) {
-            // Warn user only once
-            if (!this.warnLocalConfig) {
-              console.warn('[linter-jscs] No config found, or error while loading it.');
-              console.warn(error.stack);
-              this.warnLocalConfig = true;
-            }
-
-            // Reset config to null
-            config = null;
-            this.jscs.configure(options);
-          }
-        } else {
-          this.jscs.configure(options);
-        }
+        this.jscs.configure(config || options);
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors
