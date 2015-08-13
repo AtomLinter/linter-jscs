@@ -121,12 +121,12 @@ export default class LinterJSCS {
   }
 
   static fixString() {
-    if (!this.isMissingConfig && !this.onlyConfig) {
-      const editor = atom.workspace.getActiveTextEditor();
-      const path = editor.getPath();
-      const text = editor.getText();
+    if (this.isMissingConfig && this.onlyConfig) return;
 
-      return editor.setText(this.jscs.fixString(text, path).output);
-    }
+    const editor = atom.workspace.getActiveTextEditor();
+    const path = editor.getPath();
+    const text = editor.getText();
+
+    return editor.setText(this.jscs.fixString(text, path).output);
   }
 };
