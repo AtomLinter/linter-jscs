@@ -130,7 +130,9 @@ export default class LinterJSCS {
     const editor = atom.workspace.getActiveTextEditor();
     const path = editor.getPath();
     const text = editor.getText();
+    const fixedText = this.jscs.fixString(text, path).output;
+    if (text === fixedText) return;
 
-    return editor.setText(this.jscs.fixString(text, path).output);
+    return editor.setText(fixedText);
   }
 };
