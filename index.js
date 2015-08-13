@@ -4,6 +4,8 @@ import JSCS from 'jscs';
 import path from 'path';
 import configFile from './node_modules/jscs/lib/cli-config';
 
+const grammarScopes = ['source.js', 'source.js.jsx'];
+
 export default class LinterJSCS {
 
   static config = {
@@ -62,7 +64,7 @@ export default class LinterJSCS {
   static activate() {
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
-        if (this.fixOnSave) {
+        if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave) {
           this.fixString();
         }
       });
@@ -75,7 +77,7 @@ export default class LinterJSCS {
 
   static provideLinter() {
     return {
-      grammarScopes: ['source.js', 'source.js.jsx'],
+      grammarScopes,
       scope: 'file',
       lintOnFly: true,
       lint: (editor) => {
