@@ -65,7 +65,9 @@ export default class LinterJSCS {
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
         if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave) {
-          this.fixString();
+          process.nextTick(() => {
+            this.fixString();
+          });
         }
       });
     });
