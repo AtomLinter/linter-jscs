@@ -2,7 +2,7 @@
 
 import JSCS from 'jscs';
 import path from 'path';
-import configFile from './node_modules/jscs/lib/cli-config';
+import configFile from 'jscs/lib/cli-config';
 
 const grammarScopes = ['source.js', 'source.js.jsx'];
 
