@@ -80,7 +80,7 @@ export default class LinterJSCS {
       scope: 'file',
       lintOnFly: true,
       lint: (editor) => {
-        var JSCS = require('jscs');
+        const JSCS = require('jscs');
 
         // We need re-initialize JSCS before every lint
         // or it will looses the errors, didn't trace the error
