@@ -1,6 +1,5 @@
 'use babel';
 
-import JSCS from 'jscs';
 import { Range } from 'atom';
 import { findFile } from 'atom-linter';
 import { readFileSync } from 'fs';
@@ -81,6 +80,8 @@ export default class LinterJSCS {
       scope: 'file',
       lintOnFly: true,
       lint: (editor) => {
+        var JSCS = require('jscs');
+
         // We need re-initialize JSCS before every lint
         // or it will looses the errors, didn't trace the error
         // must be something with new 2.0.0 JSCS
