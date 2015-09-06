@@ -20,7 +20,6 @@ A gif is better than everything:
 
 ## Installation
 
-* `$ apm install linter` (if you don't have [AtomLinter/Linter](https://github.com/AtomLinter/Linter) installed).
 * `$ apm install linter-jscs`
 
 ## Other available linters
