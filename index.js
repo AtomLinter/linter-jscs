@@ -1,6 +1,5 @@
 'use babel';
 
-import JSCS from 'jscs';
 import path from 'path';
 import configFile from 'jscs/lib/cli-config';
 
