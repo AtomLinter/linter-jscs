@@ -110,7 +110,7 @@ export default class LinterJSCS {
         }
 
         // Options passed to `jscs` from package configuration
-        const options = { esnext: this.esnext, preset: this.preset };
+        const options = { configPath: config, esnext: this.esnext, preset: this.preset };
 
         if (config) {
           try {
@@ -124,6 +124,8 @@ export default class LinterJSCS {
                 throw new Error('No `jscsConfig` key in `package.json`');
               }
             }
+
+            parsedConfig.configPath = config;
 
             this.jscs.configure(parsedConfig);
           } catch (error) {
