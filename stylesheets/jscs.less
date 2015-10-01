@@ -1,5 +1,6 @@
+@import "ui-variables";
 atom-text-editor::shadow .linter-highlight, .linter-highlight {
-  &.jscs {
+  &.jscs-error {
     /* Style for Message Badges */
     &:not(.line-number) {
       background-color: @background-color-error;
@@ -12,6 +13,21 @@ atom-text-editor::shadow .linter-highlight, .linter-highlight {
     /* Style for the text editor highlight */
     .region {
       border-bottom: 1px dashed @background-color-error;
+    }
+  }
+  &.jscs-warning {
+    /* Style for Message Badges */
+    &:not(.line-number) {
+      background-color: @background-color-warning;
+      color: white;
+    }
+    /* Style for Gutter */
+    .linter-gutter {
+      color: @background-color-warning;
+    }
+    /* Style for the text editor highlight */
+    .region {
+      border-bottom: 1px dashed @background-color-warning;
     }
   }
 }

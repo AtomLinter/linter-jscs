@@ -36,7 +36,7 @@ export default class LinterJSCS {
       title: 'Display errors as',
       type: 'string',
       default: 'error',
-      enum: ['error', 'warning', 'jscs']
+      enum: ['error', 'warning', 'jscs Warning', 'jscs Error']
     }
   }
 
