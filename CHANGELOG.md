@@ -1,3 +1,8 @@
+# v3.1.0
+
+* Add two new error types
+* Add name for linter
+
 # v2.0.1 - 28/07/2015
 ### Bug fixes
 * Error with `esnext` option
