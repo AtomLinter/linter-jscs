@@ -81,6 +81,7 @@ export default class LinterJSCS {
 
   static provideLinter() {
     return {
+      name: 'JSCS',
       grammarScopes,
       scope: 'file',
       lintOnFly: true,
