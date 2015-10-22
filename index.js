@@ -138,6 +138,8 @@ export default class LinterJSCS {
     const fixedText = this.jscs.fixString(text, path).output;
     if (text === fixedText) return;
 
-    return editor.setText(fixedText);
+    const cursorPosition = editor.getCursorScreenPosition();
+    editor.setText(fixedText);
+    editor.setCursorScreenPosition(cursorPosition);
   }
 };
