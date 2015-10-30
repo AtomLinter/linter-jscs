@@ -39,7 +39,7 @@ export default class LinterJSCS {
       enum: ['error', 'warning', 'jscs Warning', 'jscs Error']
     },
     configPath: {
-      title: 'Config file path',
+      title: 'Config file path (Use relative path to your project)',
       type: 'string',
       default: ''
     }
