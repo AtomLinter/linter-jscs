@@ -37,6 +37,11 @@ export default class LinterJSCS {
       type: 'string',
       default: 'error',
       enum: ['error', 'warning', 'jscs Warning', 'jscs Error']
+    },
+    configPath: {
+      title: 'Config file path (Use relative path to your project)',
+      type: 'string',
+      default: ''
     }
   }
 
@@ -60,9 +65,13 @@ export default class LinterJSCS {
     return atom.config.get('linter-jscs.displayAs');
   }
 
+  static get configPath() {
+    return atom.config.get('linter-jscs.configPath');
+  }
+
   static activate() {
     // Install dependencies using atom-package-deps
-    require("atom-package-deps").install("linter-jscs");
+    require('atom-package-deps').install('linter-jscs');
 
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
@@ -95,7 +104,8 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const config = configFile.load(false, path.dirname(filePath));
+        const config = configFile.load(false,
+          path.join(path.dirname(filePath), this.configPath));
 
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
