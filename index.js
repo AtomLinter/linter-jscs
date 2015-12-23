@@ -104,8 +104,7 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const config = configFile.load(false,
-          path.join(path.dirname(filePath), this.configPath));
+        const config = configFile.load(false, this.configPath);
 
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
