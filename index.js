@@ -71,7 +71,7 @@ export default class LinterJSCS {
 
   static activate() {
     // Install dependencies using atom-package-deps
-    require('atom-package-deps').install('linter-jscs');
+    require('atom-package-deps').install();
 
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
