@@ -18,9 +18,7 @@ is following your code conventions/style.
 (Install [React package](https://atom.io/packages/react) to have `.jsx` files
 syntax recognized, and possibly linted by the linter)
 
-A gif is better than everything:
-
-![linter-jscs](https://github.com/iam4x/linter-jscs/raw/master/example.gif)
+![linter-jscs](https://cloud.githubusercontent.com/assets/4278113/12135855/4a33ddd6-b40f-11e5-8f69-cbb425935cad.gif)
 
 (you can see `linter-jscs` and `linter-jshint` working together without any
 problems).
