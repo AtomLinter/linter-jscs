@@ -74,11 +74,9 @@ export default class LinterJSCS {
     require('atom-package-deps').install();
 
     this.observer = atom.workspace.observeTextEditors((editor) => {
-      editor.getBuffer().onWillSave(() => {
+      editor.getBuffer().onDidSave(() => {
         if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave) {
-          process.nextTick(() => {
-            this.fixString();
-          });
+          this.fixString(editor);
         }
       });
     });
@@ -139,14 +137,19 @@ export default class LinterJSCS {
     };
   }
 
-  static fixString() {
-    if (this.isMissingConfig && this.onlyConfig) return;
+  static fixString(editor) {
+    const editorPath = editor.getPath();
+    const editorText = editor.getText();
 
-    const editor = atom.workspace.getActiveTextEditor();
-    const path = editor.getPath();
-    const text = editor.getText();
-    const fixedText = this.jscs.fixString(text, path).output;
-    if (text === fixedText) return;
+    const config = configFile.load(false,path.join(path.dirname(editorPath), this.configPath));
+    if (!config && this.onlyConfig) {
+      return
+    }
+
+    const fixedText = this.jscs.fixString(editorText, editorPath).output;
+    if (editorText === fixedText) {
+      return
+    }
 
     const cursorPosition = editor.getCursorScreenPosition();
     editor.setText(fixedText);
