@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.2.2
+
+*   Fix a race condition ([#151](https://github.com/AtomLinter/linter-jscs/pull/151))
+
 ## v3.2.1
 
 *   Update dependencies
