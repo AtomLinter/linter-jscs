@@ -141,14 +141,14 @@ export default class LinterJSCS {
     const editorPath = editor.getPath();
     const editorText = editor.getText();
 
-    const config = configFile.load(false,path.join(path.dirname(editorPath), this.configPath));
+    const config = configFile.load(false, path.join(path.dirname(editorPath), this.configPath));
     if (!config && this.onlyConfig) {
-      return
+      return;
     }
 
     const fixedText = this.jscs.fixString(editorText, editorPath).output;
     if (editorText === fixedText) {
-      return
+      return;
     }
 
     const cursorPosition = editor.getCursorScreenPosition();
