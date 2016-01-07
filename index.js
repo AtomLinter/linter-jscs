@@ -42,6 +42,11 @@ export default class LinterJSCS {
       title: 'Config file path (Use relative path to your project)',
       type: 'string',
       default: ''
+    },
+    preferGlobalJscs: {
+      title: 'Prefer the global JSCS installation',
+      type: 'boolean',
+      default: false
     }
   }
 
@@ -93,7 +98,27 @@ export default class LinterJSCS {
       scope: 'file',
       lintOnFly: true,
       lint: (editor) => {
-        const JSCS = require('jscs');
+        let jscsSourcePath = 'jscs';
+        if (atom.config.get('linter-jscs.preferGlobalJscs')) {
+          var exec = require('child_process').execSync;
+          var npmPrefix = exec('npm config get prefix', { env: process.env }) + '';
+          jscsSourcePath =  path.join(
+              npmPrefix.trim(),
+              'lib', // FIXME: not there in windows
+              'node_modules',
+              'jscs'
+          );
+        }
+
+        let JSCS;
+        try {
+          JSCS = require(jscsSourcePath);
+        }
+        catch (e) {
+          const type = this.displayAs;
+          const html = `Could not load JSCS from: ${jscsSourcePath} ${e}`;
+          return [{ type,  html }];
+        }
 
         // We need re-initialize JSCS before every lint
         // or it will looses the errors, didn't trace the error
@@ -141,14 +166,14 @@ export default class LinterJSCS {
     const editorPath = editor.getPath();
     const editorText = editor.getText();
 
-    const config = configFile.load(false,path.join(path.dirname(editorPath), this.configPath));
+    const config = configFile.load(false, path.join(path.dirname(editorPath), this.configPath));
     if (!config && this.onlyConfig) {
-      return
+      return;
     }
 
     const fixedText = this.jscs.fixString(editorText, editorPath).output;
     if (editorText === fixedText) {
-      return
+      return;
     }
 
     const cursorPosition = editor.getCursorScreenPosition();
