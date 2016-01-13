@@ -1,6 +1,6 @@
 # Change Log
 
-## v3.3.2
+## v3.3.0
 
 *   Skip Excluded Files ([#154](https://github.com/AtomLinter/linter-jscs/pull/154))
 
