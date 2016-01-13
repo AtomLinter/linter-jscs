@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.3.2
+
+*   Skip Excluded Files ([#154](https://github.com/AtomLinter/linter-jscs/pull/154))
+
 ## v3.2.2
 
 *   Fix a race condition ([#151](https://github.com/AtomLinter/linter-jscs/pull/151))
