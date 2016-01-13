@@ -2,6 +2,7 @@
 
 import path from 'path';
 import configFile from 'jscs/lib/cli-config';
+import globule from 'globule';
 
 const grammarScopes = ['source.js', 'source.js.jsx'];
 
@@ -75,7 +76,12 @@ export default class LinterJSCS {
 
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onDidSave(() => {
-        if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave) {
+
+        // Exclude `excludeFiles` for fix on save
+        const config = this.getConfig(editor.getPath());
+        var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
+
+        if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave && !exclude) {
           this.fixString(editor);
         }
       });
@@ -102,8 +108,7 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const config = configFile.load(false,
-          path.join(path.dirname(filePath), this.configPath));
+        const config = this.getConfig(filePath);
 
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
@@ -118,6 +123,10 @@ export default class LinterJSCS {
         const errors = this.jscs
           .checkString(text, filePath)
           .getErrorList();
+
+        // Exclude `excludeFiles` for errors
+        var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
+        if (exclude) return [];
 
         return errors.map(({ rule, message, line, column }) => {
 
@@ -137,18 +146,28 @@ export default class LinterJSCS {
     };
   }
 
+  static getFilePath(path) {
+    const relative = atom.project.relativizePath(path);
+    return relative[1];
+  }
+
+  static getConfig(filePath) {
+    return configFile.load(false,
+      path.join(path.dirname(filePath), this.configPath));
+  }
+
   static fixString(editor) {
     const editorPath = editor.getPath();
     const editorText = editor.getText();
 
-    const config = configFile.load(false,path.join(path.dirname(editorPath), this.configPath));
+    const config = this.getConfig(editorPath);
     if (!config && this.onlyConfig) {
-      return
+      return;
     }
 
     const fixedText = this.jscs.fixString(editorText, editorPath).output;
     if (editorText === fixedText) {
-      return
+      return;
     }
 
     const cursorPosition = editor.getCursorScreenPosition();
