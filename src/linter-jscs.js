@@ -14,37 +14,37 @@ export default class LinterJSCS {
       description: 'Preset option is ignored if a config file is found for the linter.',
       type: 'string',
       default: 'airbnb',
-      enum: ['airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex']
+      enum: ['airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex'],
     },
     esnext: {
       description: 'Attempts to parse your code as ES6+, JSX, and Flow using the babel-jscs package as the parser.',
       type: 'boolean',
-      default: false
+      default: false,
     },
     onlyConfig: {
       title: 'Only Config',
       description: 'Disable linter if there is no config file found for the linter.',
       type: 'boolean',
-      default: false
+      default: false,
     },
     fixOnSave: {
       title: 'Fix on save',
       description: 'Fix JavaScript on save',
       type: 'boolean',
-      default: false
+      default: false,
     },
     displayAs: {
       title: 'Display errors as',
       type: 'string',
       default: 'error',
-      enum: ['error', 'warning', 'jscs Warning', 'jscs Error']
+      enum: ['error', 'warning', 'jscs Warning', 'jscs Error'],
     },
     configPath: {
       title: 'Config file path (Use relative path to your project)',
       type: 'string',
-      default: ''
-    }
-  }
+      default: '',
+    },
+  };
 
   static get preset() {
     return atom.config.get('linter-jscs.preset');
@@ -117,7 +117,7 @@ export default class LinterJSCS {
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors
-        if (!config && this.onlyConfig) return [];
+        if (!config && this.onlyConfig) return Promise.resolve([]);
 
         const text = editor.getText();
         const errors = this.jscs
@@ -126,9 +126,9 @@ export default class LinterJSCS {
 
         // Exclude `excludeFiles` for errors
         var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
-        if (exclude) return [];
+        if (exclude) return Promise.resolve([]);
 
-        return errors.map(({ rule, message, line, column }) => {
+        return Promise.resolve(errors.map(({ rule, message, line, column }) => {
 
           // Calculate range to make the error whole line
           // without the indentation at begining of line
@@ -141,8 +141,8 @@ export default class LinterJSCS {
           const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
 
           return { type, html, filePath, range };
-        });
-      }
+        }));
+      },
     };
   }
 
