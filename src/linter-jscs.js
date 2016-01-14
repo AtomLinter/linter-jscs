@@ -98,7 +98,7 @@ export default class LinterJSCS {
       grammarScopes,
       scope: 'file',
       lintOnFly: true,
-      lint: (editor) => {
+      lint: (editor, overrideOptions) => {
         const JSCS = require('jscs');
 
         // We need re-initialize JSCS before every lint
@@ -113,7 +113,7 @@ export default class LinterJSCS {
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
 
-        this.jscs.configure(config || options);
+        this.jscs.configure(overrideOptions || config || options);
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors

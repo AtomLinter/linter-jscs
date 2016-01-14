@@ -78,4 +78,31 @@ describe('The jscs provider for Linter', () => {
       });
     });
   });
+
+  describe('provides override options and', () => {
+    let editor = null;
+    beforeEach(() => {
+      waitsForPromise(() => {
+        return atom.workspace.open(__dirname + '/files/sloppy.js').then(openEditor => {
+          editor = openEditor;
+        });
+      });
+    });
+
+    it('should return no errors if the file is excluded', () => {
+      waitsForPromise(() => {
+        return lint(editor, { excludeFiles: ['sloppy.js'] }).then(messages => {
+          expect(messages.length).toEqual(0);
+        });
+      });
+    });
+
+    it('should return no errors if `requireTrailingComma` is set to null', () => {
+      waitsForPromise(() => {
+        return lint(editor, { requireTrailingComma: null }).then(messages => {
+          expect(messages.length).toEqual(0);
+        });
+      });
+    });
+  });
 });
