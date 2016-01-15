@@ -27,6 +27,7 @@
     }
   },
   "devDependencies": {
+    "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
   }
 }
