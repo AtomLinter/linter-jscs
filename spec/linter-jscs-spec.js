@@ -3,6 +3,7 @@
 // var lint = require('../src/linter-jscs');
 
 import linter from '../src/linter-jscs';
+import temp from 'temp';
 
 describe('The jscs provider for Linter', () => {
   const lint = linter.provideLinter().lint;
@@ -10,6 +11,9 @@ describe('The jscs provider for Linter', () => {
   beforeEach(() => {
     waitsForPromise(() => {
       return atom.packages.activatePackage('linter-jscs');
+    });
+    waitsForPromise(() => {
+      return atom.packages.activatePackage('language-javascript');
     });
     waitsForPromise(() => {
       return atom.workspace.open(__dirname + '/files/sloppy.js');
@@ -91,7 +95,7 @@ describe('The jscs provider for Linter', () => {
 
     it('should return no errors if the file is excluded', () => {
       waitsForPromise(() => {
-        return lint(editor, { excludeFiles: ['sloppy.js'] }).then(messages => {
+        return lint(editor, {}, { excludeFiles: ['sloppy.js'] }).then(messages => {
           expect(messages.length).toEqual(0);
         });
       });
@@ -99,7 +103,29 @@ describe('The jscs provider for Linter', () => {
 
     it('should return no errors if `requireTrailingComma` is set to null', () => {
       waitsForPromise(() => {
-        return lint(editor, { requireTrailingComma: null }).then(messages => {
+        return lint(editor, {}, { requireTrailingComma: null }).then(messages => {
+          expect(messages.length).toEqual(0);
+        });
+      });
+    });
+  });
+
+  describe('save', () => {
+    let editor = null;
+    beforeEach(() => {
+      waitsForPromise(() => {
+        return atom.workspace.open(__dirname + '/files/sloppy.js').then(openEditor => {
+          editor = openEditor;
+        });
+      });
+    });
+
+    it('should fix the file', () => {
+      waitsForPromise(() => {
+        const tempFile = temp.openSync().path;
+        editor.saveAs(tempFile);
+
+        return lint(editor, {}, { }, true).then(messages => {
           expect(messages.length).toEqual(0);
         });
       });

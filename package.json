@@ -22,5 +22,8 @@
         "1.0.0": "provideLinter"
       }
     }
+  },
+  "devDependencies": {
+    "temp": "^0.8.3"
   }
 }

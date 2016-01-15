@@ -81,7 +81,7 @@ export default class LinterJSCS {
         const config = this.getConfig(editor.getPath());
         var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
 
-        if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave && !exclude) {
+        if ((grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave && !exclude) || this.testFixOnSave) {
           this.fixString(editor);
         }
       });
@@ -98,8 +98,10 @@ export default class LinterJSCS {
       grammarScopes,
       scope: 'file',
       lintOnFly: true,
-      lint: (editor, overrideOptions) => {
+      lint: (editor, opts, overrideOptions, testFixOnSave) => {
         const JSCS = require('jscs');
+
+        this.testFixOnSave = testFixOnSave;
 
         // We need re-initialize JSCS before every lint
         // or it will looses the errors, didn't trace the error
