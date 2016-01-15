@@ -1,12 +1,15 @@
 {
   "name": "linter-jscs",
   "version": "3.3.0",
-  "main": "index.js",
+  "main": "src/linter-jscs",
   "description": "Linter plugin for JavaScript, using JSCS",
   "repository": "https://github.com/AtomLinter/linter-jscs",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0"
+  },
+  "scripts": {
+    "test": "fsmonitor -d src -s -q apm test"
   },
   "dependencies": {
     "atom-package-deps": "^3.0.7",
@@ -22,5 +25,8 @@
         "1.0.0": "provideLinter"
       }
     }
+  },
+  "devDependencies": {
+    "temp": "^0.8.3"
   }
 }
