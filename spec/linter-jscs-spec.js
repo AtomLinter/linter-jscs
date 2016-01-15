@@ -131,4 +131,32 @@ describe('The jscs provider for Linter', () => {
       });
     });
   });
+
+  describe('custom rules', () => {
+    let editor = null;
+    beforeEach(() => {
+      waitsForPromise(() => {
+        return atom.workspace.open(__dirname + '/files/long-file-line.js').then(openEditor => {
+          editor = openEditor;
+        });
+      });
+    });
+
+    it('should throw error for empty function call', () => {
+      waitsForPromise(() => {
+
+        const config = {
+          additionalRules: [
+            './spec/rules/*.js',
+          ],
+          lineLength: 40,
+        };
+
+        return lint(editor, {}, config).then(messages => {
+          expect(messages.length).toEqual(1);
+          expect(messages[0].html).toEqual('<span class=\'badge badge-flexible\'>lineLength</span> Line must be at most 40 characters');
+        });
+      });
+    });
+  });
 });
