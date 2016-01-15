@@ -8,6 +8,9 @@
   "engines": {
     "atom": ">=1.0.0"
   },
+  "scripts": {
+    "test": "fsmonitor -d src -s -q apm test"
+  },
   "dependencies": {
     "atom-package-deps": "^3.0.7",
     "globule": "^0.2.0",
