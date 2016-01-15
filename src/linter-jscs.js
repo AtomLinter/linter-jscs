@@ -40,7 +40,7 @@ export default class LinterJSCS {
       enum: ['error', 'warning', 'jscs Warning', 'jscs Error'],
     },
     configPath: {
-      title: 'Config file path (Use relative path to your project)',
+      title: 'Config file path (Absolute or relative path to your project)',
       type: 'string',
       default: '',
     },
@@ -154,6 +154,10 @@ export default class LinterJSCS {
   }
 
   static getConfig(filePath) {
+    if (path.isAbsolute(this.configPath)) {
+      return configFile.load(false, this.configPath);
+    }
+
     return configFile.load(false,
       path.join(path.dirname(filePath), this.configPath));
   }
