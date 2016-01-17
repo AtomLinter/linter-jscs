@@ -131,16 +131,9 @@ export default class LinterJSCS {
         if (exclude) return Promise.resolve([]);
 
         return Promise.resolve(errors.map(({ rule, message, line, column }) => {
-
-          // Calculate range to make the error whole line
-          // without the indentation at begining of line
-          const indentLevel = editor.indentationForBufferRow(line - 1);
-          const startCol = editor.getTabLength() * indentLevel;
-          const endCol = editor.getBuffer().lineLengthForRow(line - 1);
-          const range = [[line - 1, startCol], [line - 1, endCol]];
-
           const type = this.displayAs;
           const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
+          const range = [[line - 1, column], [line - 1, column]];
 
           return { type, html, filePath, range };
         }));

@@ -57,7 +57,7 @@ describe('The jscs provider for Linter', () => {
           expect(messages[0].filePath).toMatch(/.+sloppy\.js$/);
           expect(messages[0].range).toBeDefined();
           expect(messages[0].range.length).toEqual(2);
-          expect(messages[0].range).toEqual([[2, 2], [2, 12]]);
+          expect(messages[0].range).toEqual([[2, 12], [2, 12]]);
         });
       });
     });
