@@ -1,5 +1,10 @@
 # Change Log
 
+## v3.4.0
+
+Fix Incorrect Column Number on Errors
+https://github.com/AtomLinter/linter-jscs/issues/122
+
 ## v3.3.1
 
 Add Tests
