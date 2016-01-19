@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "atom-package-deps": "^3.0.7",
+    "atom-linter": "^4.3.2",
     "globule": "^0.2.0",
     "jscs": "^2.8.0"
   },

@@ -4,6 +4,11 @@
 
 import linter from '../src/linter-jscs';
 import temp from 'temp';
+import * as path from 'path';
+const sloppyPath = path.join(__dirname, 'files', 'sloppy.js');
+const goodPath = path.join(__dirname, 'files', 'good.js');
+const emptyPath = path.join(__dirname, 'files', 'empty.js');
+const lflPath = path.join(__dirname, 'files', 'long-file-line.js');
 
 describe('The jscs provider for Linter', () => {
   const lint = linter.provideLinter().lint;
@@ -16,7 +21,7 @@ describe('The jscs provider for Linter', () => {
       return atom.packages.activatePackage('language-javascript');
     });
     waitsForPromise(() => {
-      return atom.workspace.open(__dirname + '/files/sloppy.js');
+      return atom.workspace.open(sloppyPath);
     });
   });
 
@@ -32,7 +37,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() => {
-        return atom.workspace.open(__dirname + '/files/sloppy.js').then(openEditor => {
+        return atom.workspace.open(sloppyPath).then(openEditor => {
           editor = openEditor;
         });
       });
@@ -57,7 +62,7 @@ describe('The jscs provider for Linter', () => {
           expect(messages[0].filePath).toMatch(/.+sloppy\.js$/);
           expect(messages[0].range).toBeDefined();
           expect(messages[0].range.length).toEqual(2);
-          expect(messages[0].range).toEqual([[2, 12], [2, 12]]);
+          expect(messages[0].range).toEqual([[2, 11], [2, 12]]);
         });
       });
     });
@@ -65,7 +70,7 @@ describe('The jscs provider for Linter', () => {
 
   it('finds nothing wrong with an empty file', () => {
     waitsForPromise(() => {
-      return atom.workspace.open(__dirname + '/files/empty.js').then(editor => {
+      return atom.workspace.open(emptyPath).then(editor => {
         return lint(editor).then(messages => {
           expect(messages.length).toEqual(0);
         });
@@ -75,7 +80,7 @@ describe('The jscs provider for Linter', () => {
 
   it('finds nothing wrong with a valid file', () => {
     waitsForPromise(() => {
-      return atom.workspace.open(__dirname + '/files/good.js').then(editor => {
+      return atom.workspace.open(goodPath).then(editor => {
         return lint(editor).then(messages => {
           expect(messages.length).toEqual(0);
         });
@@ -87,7 +92,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() => {
-        return atom.workspace.open(__dirname + '/files/sloppy.js').then(openEditor => {
+        return atom.workspace.open(sloppyPath).then(openEditor => {
           editor = openEditor;
         });
       });
@@ -114,7 +119,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() => {
-        return atom.workspace.open(__dirname + '/files/sloppy.js').then(openEditor => {
+        return atom.workspace.open(sloppyPath).then(openEditor => {
           editor = openEditor;
         });
       });
@@ -136,7 +141,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() => {
-        return atom.workspace.open(__dirname + '/files/long-file-line.js').then(openEditor => {
+        return atom.workspace.open(lflPath).then(openEditor => {
           editor = openEditor;
         });
       });
@@ -147,7 +152,7 @@ describe('The jscs provider for Linter', () => {
 
         const config = {
           additionalRules: [
-            './spec/rules/*.js',
+            path.join('.', 'spec', 'rules', '*.js'),
           ],
           lineLength: 40,
         };
