@@ -93,6 +93,7 @@ export default class LinterJSCS {
   }
 
   static provideLinter() {
+    const helpers = require('atom-linter');
     return {
       name: 'JSCS',
       grammarScopes,
@@ -133,7 +134,7 @@ export default class LinterJSCS {
         return Promise.resolve(errors.map(({ rule, message, line, column }) => {
           const type = this.displayAs;
           const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
-          const range = [[line - 1, column], [line - 1, column]];
+          const range = helpers.rangeFromLineNumber(editor, line - 1, column - 1);
 
           return { type, html, filePath, range };
         }));
