@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.4.1
+
+- Use `rangeFromLineNumber` to highlight errors
+
 ## v3.4.0
 
 Fix Incorrect Column Number on Errors
