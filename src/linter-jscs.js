@@ -134,6 +134,13 @@ export default class LinterJSCS {
         return Promise.resolve(errors.map(({ rule, message, line, column }) => {
           const type = this.displayAs;
           const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
+
+          // Work around a bug in jscs causing it to report columns past the end of the line
+          const maxCol = editor.getBuffer().lineLengthForRow(line - 1);
+          if ((column - 1) > maxCol) {
+            column = maxCol + 1;
+          }
+
           const range = helpers.rangeFromLineNumber(editor, line - 1, column - 1);
 
           return { type, html, filePath, range };
