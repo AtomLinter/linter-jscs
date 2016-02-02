@@ -1,5 +1,10 @@
 # Change Log
 
+## v3.4.2
+
+- Upgrade JSPM to 2.9.0
+- Merge Package Options with .jscsrc file
+
 ## v3.4.1
 
 - Use `rangeFromLineNumber` to highlight errors
