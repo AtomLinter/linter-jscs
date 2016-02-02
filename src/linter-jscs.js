@@ -111,12 +111,12 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const config = this.getConfig(filePath) || {};
+        const config = this.getConfig(filePath);
 
         // Options passed to `jscs` from package configuration
         const options = { esnext: this.esnext, preset: this.preset };
 
-        this.jscs.configure(Object.assign({}, options, overrideOptions || config));
+        this.jscs.configure(overrideOptions || Object.assign({}, options, config));
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors
