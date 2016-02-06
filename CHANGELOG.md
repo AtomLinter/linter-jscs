@@ -1,6 +1,6 @@
 # Change Log
 
-## v3.4.3
+## v3.4.4
 
 - Fix Bug With JSON Files Being Parsed ([#174](https://github.com/AtomLinter/linter-jscs/issues/174))
 
