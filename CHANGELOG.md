@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.4.3
+
+- Fix Bug With JSON Files Being Parsed ([#174](https://github.com/AtomLinter/linter-jscs/issues/174))
+
 ## v3.4.2
 
 - Upgrade JSPM to 2.9.0
