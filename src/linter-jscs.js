@@ -77,12 +77,16 @@ export default class LinterJSCS {
     this.observer = atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onDidSave(() => {
 
-        // Exclude `excludeFiles` for fix on save
-        const config = this.getConfig(editor.getPath());
-        var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
+        if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 || this.testFixOnSave) {
 
-        if ((grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 && this.fixOnSave && !exclude) || this.testFixOnSave) {
-          this.fixString(editor);
+          // Exclude `excludeFiles` for fix on save
+          const config = this.getConfig(editor.getPath());
+          var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
+
+          if ((this.fixOnSave && !exclude) || this.testFixOnSave) {
+            console.log('FIXING');
+            this.fixString(editor);
+          }
         }
       });
     });
