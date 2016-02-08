@@ -14,7 +14,7 @@ export default class LinterJSCS {
       description: 'Preset option is ignored if a config file is found for the linter.',
       type: 'string',
       default: 'airbnb',
-      enum: ['airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex'],
+      enum: ['<none>', 'airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex'],
     },
     esnext: {
       description: 'Attempts to parse your code as ES6+, JSX, and Flow using the babel-jscs package as the parser.',
@@ -118,7 +118,10 @@ export default class LinterJSCS {
         const config = this.getConfig(filePath);
 
         // Options passed to `jscs` from package configuration
-        const options = { esnext: this.esnext, preset: this.preset };
+        const options = { esnext: this.esnext };
+        if (this.preset !== '<none>') {
+          options.preset = this.preset;
+        }
 
         this.jscs.configure(overrideOptions || Object.assign({}, options, config));
 
