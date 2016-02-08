@@ -123,7 +123,13 @@ export default class LinterJSCS {
           options.preset = this.preset;
         }
 
-        this.jscs.configure(overrideOptions || Object.assign({}, options, config));
+        // `configPath` is non-enumerable so `Object.assign` won't copy it.
+        // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
+        let jscsConfig = overrideOptions || Object.assign({}, options, config);
+        if (!jscsConfig.configPath && config) {
+          jscsConfig.configPath = config.configPath;
+        }
+        this.jscs.configure(jscsConfig);
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors
