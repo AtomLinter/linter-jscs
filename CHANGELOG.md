@@ -1,26 +1,30 @@
 # Change Log
 
+## v3.4.5
+
+*   Add `<none>` "preset" option (#178)
+*   Fix merging of `configPath` property (#176)
+
 ## v3.4.4
 
-- Fix Bug With JSON Files Being Parsed ([#174](https://github.com/AtomLinter/linter-jscs/issues/174))
+*   Fix Bug With JSON Files Being Parsed ([#174](https://github.com/AtomLinter/linter-jscs/issues/174))
 
 ## v3.4.2
 
-- Upgrade JSPM to 2.9.0
-- Merge Package Options with .jscsrc file
+*   Upgrade JSPM to 2.9.0
+*   Merge Package Options with .jscsrc file
 
 ## v3.4.1
 
-- Use `rangeFromLineNumber` to highlight errors
+*   Use `rangeFromLineNumber` to highlight errors
 
 ## v3.4.0
 
-Fix Incorrect Column Number on Errors
-https://github.com/AtomLinter/linter-jscs/issues/122
+*   Fix Incorrect Column Number on Errors (#122)
 
 ## v3.3.1
 
-Add Tests
+*   Add Tests
 
 ## v3.3.0
 
