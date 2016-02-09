@@ -113,6 +113,7 @@ export default class LinterJSCS {
         // must be something with new 2.0.0 JSCS
         this.jscs = new JSCS();
         this.jscs.registerDefaultRules();
+        this.extract = require('jscs/lib/extract-js');
 
         const filePath = editor.getPath();
         const config = this.getConfig(filePath);
@@ -141,7 +142,7 @@ export default class LinterJSCS {
         var errors;
         var result;
         if (editor.getGrammar().scopeName === 'text.html.basic') {
-          result = this.jscs.extractJs(filePath, text);
+          result = this.extract(filePath, text);
 
           result.sources.forEach(function (script) {
             this.jscs.checkString(script.source, filePath).getErrorList().forEach(function (error) {
