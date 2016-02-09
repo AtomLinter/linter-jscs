@@ -4,7 +4,7 @@ import path from 'path';
 import configFile from 'jscs/lib/cli-config';
 import globule from 'globule';
 
-const grammarScopes = ['source.js', 'source.js.jsx'];
+const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
 
 export default class LinterJSCS {
 
@@ -129,6 +129,7 @@ export default class LinterJSCS {
         if (!jscsConfig.configPath && config) {
           jscsConfig.configPath = config.configPath;
         }
+
         this.jscs.configure(jscsConfig);
 
         // We don't have a config file present in project directory
@@ -136,9 +137,26 @@ export default class LinterJSCS {
         if (!config && this.onlyConfig) return Promise.resolve([]);
 
         const text = editor.getText();
-        const errors = this.jscs
-          .checkString(text, filePath)
-          .getErrorList();
+
+        var errors;
+        var result;
+        if (editor.getGrammar().scopeName === 'text.html.basic') {
+          result = this.jscs.extractJs(filePath, text);
+
+          result.sources.forEach(function (script) {
+            this.jscs.checkString(script.source, filePath).getErrorList().forEach(function (error) {
+              error.line += script.line;
+              error.column += script.offset;
+              result.addError(error);
+            });
+          }, this);
+
+          errors = result.errors.getErrorList();
+        } else {
+          errors = this.jscs
+            .checkString(text, filePath)
+            .getErrorList();
+        }
 
         // Exclude `excludeFiles` for errors
         var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
