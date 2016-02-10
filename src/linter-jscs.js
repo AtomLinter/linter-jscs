@@ -2,6 +2,7 @@
 
 import path from 'path';
 import configFile from 'jscs/lib/cli-config';
+import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
 
 const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
@@ -123,7 +124,6 @@ export default class LinterJSCS {
         // must be something with new 2.0.0 JSCS
         this.jscs = new JSCS();
         this.jscs.registerDefaultRules();
-        this.extract = require('jscs/lib/extract-js');
 
         const filePath = editor.getPath();
         const config = this.getConfig(filePath);
@@ -152,7 +152,7 @@ export default class LinterJSCS {
         var errors;
         var result;
         if (this.lintInlineJavaScript && editor.getGrammar().scopeName === 'text.html.basic') {
-          result = this.extract(filePath, text);
+          result = extractJs(filePath, text);
 
           result.sources.forEach(function (script) {
             this.jscs.checkString(script.source, filePath).getErrorList().forEach(function (error) {
