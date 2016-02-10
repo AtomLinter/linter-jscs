@@ -21,6 +21,12 @@ export default class LinterJSCS {
       type: 'boolean',
       default: false,
     },
+    lintInlineJavaScript: {
+      title: 'Lint Inline JavaScript',
+      description: 'Lint JavaScript inside `<script>` blocks in HTML files.',
+      type: 'boolean',
+      default: false,
+    },
     onlyConfig: {
       title: 'Only Config',
       description: 'Disable linter if there is no config file found for the linter.',
@@ -52,6 +58,10 @@ export default class LinterJSCS {
 
   static get esnext() {
     return atom.config.get('linter-jscs.esnext');
+  }
+
+  static get lintInlineJavaScript() {
+    return atom.config.get('linter-jscs.lintInlineJavaScript');
   }
 
   static get onlyConfig() {
@@ -141,7 +151,7 @@ export default class LinterJSCS {
 
         var errors;
         var result;
-        if (editor.getGrammar().scopeName === 'text.html.basic') {
+        if (this.lintInlineJavaScript && editor.getGrammar().scopeName === 'text.html.basic') {
           result = this.extract(filePath, text);
 
           result.sources.forEach(function (script) {
