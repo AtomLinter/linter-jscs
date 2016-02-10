@@ -129,6 +129,7 @@ export default class LinterJSCS {
         if (!jscsConfig.configPath && config) {
           jscsConfig.configPath = config.configPath;
         }
+
         this.jscs.configure(jscsConfig);
 
         // We don't have a config file present in project directory
@@ -148,7 +149,13 @@ export default class LinterJSCS {
           const type = this.displayAs;
           const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
 
-          // Work around a bug in jscs causing it to report columns past the end of the line
+          /* Work around a bug in esprima causing jscs to report columns past
+           * the end of the line. This is fixed in esprima@2.7.2, but as jscs
+           * only depends on "~2.7.0" we need to wait on a jscs release depending
+           * on a later version till this can be removed.
+           * Ref: https://github.com/jquery/esprima/issues/1457
+           * TODO: Remove when jscs updates
+           */
           const maxCol = editor.getBuffer().lineLengthForRow(line - 1);
           if ((column - 1) > maxCol) {
             column = maxCol + 1;
