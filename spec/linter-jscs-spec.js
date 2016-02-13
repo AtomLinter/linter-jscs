@@ -6,6 +6,7 @@ import linter from '../src/linter-jscs';
 import temp from 'temp';
 import * as path from 'path';
 const sloppyPath = path.join(__dirname, 'files', 'sloppy.js');
+const sloppyHTMLPath = path.join(__dirname, 'files', 'sloppy.html');
 const goodPath = path.join(__dirname, 'files', 'good.js');
 const emptyPath = path.join(__dirname, 'files', 'empty.js');
 const lflPath = path.join(__dirname, 'files', 'long-file-line.js');
@@ -83,6 +84,41 @@ describe('The jscs provider for Linter', () => {
       return atom.workspace.open(goodPath).then(editor => {
         return lint(editor).then(messages => {
           expect(messages.length).toEqual(0);
+        });
+      });
+    });
+  });
+
+  describe('checks sloppy.html and', () => {
+    let editor = null;
+    beforeEach(() => {
+      waitsForPromise(() => {
+        return atom.workspace.open(sloppyHTMLPath).then(openEditor => {
+          editor = openEditor;
+        });
+      });
+    });
+
+    it('finds at least one message', () => {
+      waitsForPromise(() => {
+        return lint(editor).then(messages => {
+          expect(messages.length).toBeGreaterThan(0);
+        });
+      });
+    });
+
+    it('verifies the first message', () => {
+      waitsForPromise(() => {
+        return lint(editor).then(messages => {
+          expect(messages[0].type).toBeDefined();
+          expect(messages[0].type).toEqual('error');
+          expect(messages[0].html).toBeDefined();
+          expect(messages[0].html).toEqual('<span class=\'badge badge-flexible\'>requireTrailingComma</span> Missing comma before closing curly brace');
+          expect(messages[0].filePath).toBeDefined();
+          expect(messages[0].filePath).toMatch(/.+sloppy\.html$/);
+          expect(messages[0].range).toBeDefined();
+          expect(messages[0].range.length).toEqual(2);
+          expect(messages[0].range).toEqual([[11, 17], [11, 18]]);
         });
       });
     });

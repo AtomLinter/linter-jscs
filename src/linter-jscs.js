@@ -137,10 +137,11 @@ export default class LinterJSCS {
         if (!config && this.onlyConfig) return Promise.resolve([]);
 
         const text = editor.getText();
+        const scope = editor.getGrammar().scopeName;
 
         var errors;
         var result;
-        if (editor.getGrammar().scopeName === 'text.html.basic') {
+        if (scope === 'text.html.basic' || scope === 'text.plain.null-grammar') { // text.plain.null-grammar is temp for tests
           result = extractJs(filePath, text);
           console.log(result);
 
