@@ -2,9 +2,10 @@
 
 import path from 'path';
 import configFile from 'jscs/lib/cli-config';
+import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
 
-const grammarScopes = ['source.js', 'source.js.jsx'];
+const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
 
 export default class LinterJSCS {
 
@@ -84,7 +85,6 @@ export default class LinterJSCS {
           var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
 
           if ((this.fixOnSave && !exclude) || this.testFixOnSave) {
-            console.log('FIXING');
             this.fixString(editor);
           }
         }
@@ -137,9 +137,26 @@ export default class LinterJSCS {
         if (!config && this.onlyConfig) return Promise.resolve([]);
 
         const text = editor.getText();
-        const errors = this.jscs
-          .checkString(text, filePath)
-          .getErrorList();
+        const scope = editor.getGrammar().scopeName;
+
+        let errors;
+        if (scope === 'text.html.basic' || scope === 'text.plain.null-grammar') { // text.plain.null-grammar is temp for tests
+          let result = extractJs(filePath, text);
+
+          result.sources.forEach((script) => {
+            this.jscs.checkString(script.source, filePath).getErrorList().forEach((error) => {
+              error.line += script.line;
+              error.column += script.offset;
+              result.addError(error);
+            });
+          }, this);
+
+          errors = result.errors.getErrorList();
+        } else {
+          errors = this.jscs
+            .checkString(text, filePath)
+            .getErrorList();
+        }
 
         // Exclude `excludeFiles` for errors
         var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
