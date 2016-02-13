@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.4.6
+
+*   Support Linting of Inline JS (#110)
+
 ## v3.4.5
 
 *   Add `<none>` "preset" option (#178)
