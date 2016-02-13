@@ -139,14 +139,12 @@ export default class LinterJSCS {
         const text = editor.getText();
         const scope = editor.getGrammar().scopeName;
 
-        var errors;
-        var result;
+        let errors;
         if (scope === 'text.html.basic' || scope === 'text.plain.null-grammar') { // text.plain.null-grammar is temp for tests
-          result = extractJs(filePath, text);
-          console.log(result);
+          let result = extractJs(filePath, text);
 
-          result.sources.forEach(function (script) {
-            this.jscs.checkString(script.source, filePath).getErrorList().forEach(function (error) {
+          result.sources.forEach((script) => {
+            this.jscs.checkString(script.source, filePath).getErrorList().forEach((error) => {
               error.line += script.line;
               error.column += script.offset;
               result.addError(error);
