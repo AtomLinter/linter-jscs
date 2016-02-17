@@ -209,6 +209,31 @@ export default class LinterJSCS {
       return;
     }
 
+    const JSCS = require('jscs');
+
+    // We need re-initialize JSCS before every lint
+    // or it will looses the errors, didn't trace the error
+    // must be something with new 2.0.0 JSCS
+    this.jscs = new JSCS();
+    this.jscs.registerDefaultRules();
+
+    const filePath = editor.getPath();
+
+    // Options passed to `jscs` from package configuration
+    const options = { esnext: this.esnext };
+    if (this.preset !== '<none>') {
+      options.preset = this.preset;
+    }
+
+    // `configPath` is non-enumerable so `Object.assign` won't copy it.
+    // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
+    let jscsConfig = Object.assign({}, options, config);
+    if (!jscsConfig.configPath && config) {
+      jscsConfig.configPath = config.configPath;
+    }
+
+    this.jscs.configure(jscsConfig);
+
     const fixedText = this.jscs.fixString(editorText, editorPath).output;
     if (editorText === fixedText) {
       return;
