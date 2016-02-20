@@ -4,6 +4,7 @@ import path from 'path';
 import configFile from 'jscs/lib/cli-config';
 import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
+import objectAssign from 'object-assign';
 
 const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
 
@@ -125,7 +126,7 @@ export default class LinterJSCS {
 
         // `configPath` is non-enumerable so `Object.assign` won't copy it.
         // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
-        let jscsConfig = overrideOptions || Object.assign({}, options, config);
+        let jscsConfig = overrideOptions || objectAssign({}, options, config);
         if (!jscsConfig.configPath && config) {
           jscsConfig.configPath = config.configPath;
         }
