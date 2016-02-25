@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.4.8
+
+*   Fix [#196] where linting was happening without config file
+
 ## v3.4.7
 
 *   Revert old behavior of skipping local preset if there is a config file.
