@@ -2,7 +2,8 @@
 
 ## v3.4.8
 
-*   Fix [#196] where linting was happening without config file
+*   Fix ([#196](https://github.com/AtomLinter/linter-jscs/issues/196)) where
+    linting was happening without config file
 
 ## v3.4.7
 
@@ -11,12 +12,12 @@
 
 ## v3.4.6
 
-*   Support Linting of Inline JS (#110)
+*   Support Linting of Inline JS ([#110](https://github.com/AtomLinter/linter-jscs/issues/110))
 
 ## v3.4.5
 
-*   Add `<none>` "preset" option (#178)
-*   Fix merging of `configPath` property (#176)
+*   Add `<none>` "preset" option ([#178](https://github.com/AtomLinter/linter-jscs/pull/178))
+*   Fix merging of `configPath` property ([#176](https://github.com/AtomLinter/linter-jscs/pull/176))
 
 ## v3.4.4
 
@@ -33,7 +34,7 @@
 
 ## v3.4.0
 
-*   Fix Incorrect Column Number on Errors (#122)
+*   Fix Incorrect Column Number on Errors ([#122](https://github.com/AtomLinter/linter-jscs/issues/122))
 
 ## v3.3.1
 
