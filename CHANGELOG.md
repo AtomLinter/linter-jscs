@@ -1,5 +1,10 @@
 # Change Log
 
+## v3.4.7
+
+*   Revert old behavior of skipping local preset if there is a config file.
+*   Change `onDidSave` to `onWillSave` 
+
 ## v3.4.6
 
 *   Support Linting of Inline JS (#110)
