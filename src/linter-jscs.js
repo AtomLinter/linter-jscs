@@ -15,7 +15,7 @@ export default class LinterJSCS {
       description: 'Preset option is ignored if a config file is found for the linter.',
       type: 'string',
       default: 'airbnb',
-      enum: ['<none>', 'airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex'],
+      enum: ['airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex'],
     },
     esnext: {
       description: 'Attempts to parse your code as ES6+, JSX, and Flow using the babel-jscs package as the parser.',
@@ -115,17 +115,11 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const config = this.getConfig(filePath);
-
-        // Options passed to `jscs` from package configuration
-        const options = { esnext: this.esnext };
-        if (this.preset !== '<none>') {
-          options.preset = this.preset;
-        }
+        const config = this.getConfig(filePath) || { preset: this.preset };
 
         // `configPath` is non-enumerable so `Object.assign` won't copy it.
         // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
-        let jscsConfig = overrideOptions || Object.assign({}, options, config);
+        let jscsConfig = overrideOptions || Object.assign({ esnext: this.esnext }, config);
         if (!jscsConfig.configPath && config) {
           jscsConfig.configPath = config.configPath;
         }
