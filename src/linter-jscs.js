@@ -76,7 +76,7 @@ export default class LinterJSCS {
     require('atom-package-deps').install();
 
     this.observer = atom.workspace.observeTextEditors((editor) => {
-      editor.getBuffer().onDidSave(() => {
+      editor.getBuffer().onWillSave(() => {
 
         if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 || this.testFixOnSave) {
 
