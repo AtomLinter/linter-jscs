@@ -116,11 +116,11 @@ export default class LinterJSCS {
         this.jscs.registerDefaultRules();
 
         const filePath = editor.getPath();
-        const config = this.getConfig(filePath) || { preset: this.preset };
+        const config = this.getConfig(filePath);
 
         // `configPath` is non-enumerable so `Object.assign` won't copy it.
         // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
-        let jscsConfig = overrideOptions || objectAssign({ esnext: this.esnext }, config);
+        let jscsConfig = overrideOptions || objectAssign({ esnext: this.esnext }, config || { preset: this.preset });
         if (!jscsConfig.configPath && config) {
           jscsConfig.configPath = config.configPath;
         }
