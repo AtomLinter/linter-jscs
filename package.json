@@ -6,7 +6,7 @@
   "repository": "https://github.com/AtomLinter/linter-jscs",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0"
+    "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
     "tdd": "fsmonitor -d src -s -q apm test",
