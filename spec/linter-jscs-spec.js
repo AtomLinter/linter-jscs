@@ -1,10 +1,9 @@
 'use babel';
 
-// var lint = require('../src/linter-jscs');
-
 import linter from '../src/linter-jscs';
 import temp from 'temp';
 import * as path from 'path';
+
 const sloppyPath = path.join(__dirname, 'files', 'sloppy.js');
 const sloppyHTMLPath = path.join(__dirname, 'files', 'sloppy.html');
 const goodPath = path.join(__dirname, 'files', 'good.js');
@@ -57,14 +56,10 @@ describe('The jscs provider for Linter', () => {
         ' Missing comma before closing curly brace';
       waitsForPromise(() =>
         lint(editor).then(messages => {
-          expect(messages[0].type).toBeDefined();
-          expect(messages[0].type).toEqual('error');
-          expect(messages[0].html).toBeDefined();
-          expect(messages[0].html).toEqual(message);
-          expect(messages[0].filePath).toBeDefined();
-          expect(messages[0].filePath).toMatch(/.+sloppy\.js$/);
-          expect(messages[0].range).toBeDefined();
-          expect(messages[0].range.length).toEqual(2);
+          expect(messages[0].type).toBe('error');
+          expect(messages[0].text).not.toBeDefined();
+          expect(messages[0].html).toBe(message);
+          expect(messages[0].filePath).toBe(sloppyPath);
           expect(messages[0].range).toEqual([[2, 11], [2, 12]]);
         })
       );
@@ -75,7 +70,7 @@ describe('The jscs provider for Linter', () => {
     waitsForPromise(() =>
       atom.workspace.open(emptyPath).then(editor =>
         lint(editor).then(messages => {
-          expect(messages.length).toEqual(0);
+          expect(messages.length).toBe(0);
         })
       )
     );
@@ -85,7 +80,7 @@ describe('The jscs provider for Linter', () => {
     waitsForPromise(() =>
       atom.workspace.open(goodPath).then(editor =>
         lint(editor).then(messages => {
-          expect(messages.length).toEqual(0);
+          expect(messages.length).toBe(0);
         })
       )
     );
@@ -114,14 +109,10 @@ describe('The jscs provider for Linter', () => {
         'Missing comma before closing curly brace';
       waitsForPromise(() =>
         lint(editor).then(messages => {
-          expect(messages[0].type).toBeDefined();
-          expect(messages[0].type).toEqual('error');
-          expect(messages[0].html).toBeDefined();
-          expect(messages[0].html).toEqual(message);
-          expect(messages[0].filePath).toBeDefined();
-          expect(messages[0].filePath).toMatch(/.+sloppy\.html$/);
-          expect(messages[0].range).toBeDefined();
-          expect(messages[0].range.length).toEqual(2);
+          expect(messages[0].type).toBe('error');
+          expect(messages[0].text).not.toBeDefined();
+          expect(messages[0].html).toBe(message);
+          expect(messages[0].filePath).toBe(sloppyHTMLPath);
           expect(messages[0].range).toEqual([[11, 17], [11, 18]]);
         })
       );
@@ -141,7 +132,7 @@ describe('The jscs provider for Linter', () => {
     it('should return no errors if the file is excluded', () => {
       waitsForPromise(() =>
         lint(editor, {}, { excludeFiles: ['sloppy.js'] }).then(messages => {
-          expect(messages.length).toEqual(0);
+          expect(messages.length).toBe(0);
         })
       );
     });
@@ -149,7 +140,7 @@ describe('The jscs provider for Linter', () => {
     it('should return no errors if `requireTrailingComma` is set to null', () => {
       waitsForPromise(() =>
         lint(editor, {}, { requireTrailingComma: null }).then(messages => {
-          expect(messages.length).toEqual(0);
+          expect(messages.length).toBe(0);
         })
       );
     });
@@ -171,7 +162,7 @@ describe('The jscs provider for Linter', () => {
         editor.saveAs(tempFile);
 
         return lint(editor, {}, { }, true).then(messages => {
-          expect(messages.length).toEqual(0);
+          expect(messages.length).toBe(0);
         });
       });
     });
@@ -198,8 +189,8 @@ describe('The jscs provider for Linter', () => {
         'Line must be at most 40 characters';
       waitsForPromise(() =>
         lint(editor, {}, config).then(messages => {
-          expect(messages.length).toEqual(1);
-          expect(messages[0].html).toEqual(message);
+          expect(messages.length).toBe(1);
+          expect(messages[0].html).toBe(message);
         })
       );
     });
