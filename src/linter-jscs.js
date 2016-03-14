@@ -5,21 +5,25 @@ import configFile from 'jscs/lib/cli-config';
 import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
 import objectAssign from 'object-assign';
+import { CompositeDisposable } from 'atom';
 
 const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
 
 export default class LinterJSCS {
-
   static config = {
     preset: {
       title: 'Preset',
       description: 'Preset option is ignored if a config file is found for the linter.',
       type: 'string',
       default: 'airbnb',
-      enum: ['airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs', 'node-style-guide', 'wikimedia', 'wordpress', 'yandex'],
+      enum: [
+        'airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs',
+        'node-style-guide', 'wikimedia', 'wordpress', 'yandex',
+      ],
     },
     esnext: {
-      description: 'Attempts to parse your code as ES6+, JSX, and Flow using the babel-jscs package as the parser.',
+      description: 'Attempts to parse your code as ES6+, JSX, and Flow using ' +
+        'the babel-jscs package as the parser.',
       type: 'boolean',
       default: false,
     },
@@ -39,7 +43,7 @@ export default class LinterJSCS {
       title: 'Display errors as',
       type: 'string',
       default: 'error',
-      enum: ['error', 'warning', 'jscs Warning', 'jscs Error'],
+      enum: ['error', 'warning'],
     },
     configPath: {
       title: 'Config file path (Absolute or relative path to your project)',
@@ -48,53 +52,55 @@ export default class LinterJSCS {
     },
   };
 
-  static get preset() {
-    return atom.config.get('linter-jscs.preset');
-  }
-
-  static get esnext() {
-    return atom.config.get('linter-jscs.esnext');
-  }
-
-  static get onlyConfig() {
-    return atom.config.get('linter-jscs.onlyConfig');
-  }
-
-  static get fixOnSave() {
-    return atom.config.get('linter-jscs.fixOnSave');
-  }
-
-  static get displayAs() {
-    return atom.config.get('linter-jscs.displayAs');
-  }
-
-  static get configPath() {
-    return atom.config.get('linter-jscs.configPath');
-  }
-
   static activate() {
     // Install dependencies using atom-package-deps
-    require('atom-package-deps').install();
+    require('atom-package-deps').install('linter-jscs');
 
-    this.observer = atom.workspace.observeTextEditors((editor) => {
+    this.subscriptions = new CompositeDisposable;
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.preset', (preset) => {
+      this.preset = preset;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.esnext', (esnext) => {
+      this.esnext = esnext;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.onlyConfig', (onlyConfig) => {
+      this.onlyConfig = onlyConfig;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.fixOnSave', (fixOnSave) => {
+      this.fixOnSave = fixOnSave;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.displayAs', (displayAs) => {
+      this.displayAs = displayAs;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.configPath', (configPath) => {
+      this.configPath = configPath;
+    }));
+
+    this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
-
         if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 || this.testFixOnSave) {
-
           // Exclude `excludeFiles` for fix on save
           const config = this.getConfig(editor.getPath());
-          var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
+          const exclude = globule.isMatch(
+            config && config.excludeFiles, this.getFilePath(editor.getPath())
+          );
 
           if ((this.fixOnSave && !exclude) || this.testFixOnSave) {
             this.fixString(editor);
           }
         }
       });
-    });
+    }));
   }
 
   static deactivate() {
-    this.observer.dispose();
+    this.subscriptions.dispose();
   }
 
   static provideLinter() {
@@ -109,22 +115,16 @@ export default class LinterJSCS {
 
         this.testFixOnSave = testFixOnSave;
 
+        const filePath = editor.getPath();
+
         // We need re-initialize JSCS before every lint
         // or it will looses the errors, didn't trace the error
         // must be something with new 2.0.0 JSCS
         this.jscs = new JSCS();
         this.jscs.registerDefaultRules();
 
-        const filePath = editor.getPath();
         const config = this.getConfig(filePath);
-
-        // `configPath` is non-enumerable so `Object.assign` won't copy it.
-        // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
-        let jscsConfig = overrideOptions || objectAssign({ esnext: this.esnext }, config || { preset: this.preset });
-        if (!jscsConfig.configPath && config) {
-          jscsConfig.configPath = config.configPath;
-        }
-
+        const jscsConfig = overrideOptions || config;
         this.jscs.configure(jscsConfig);
 
         // We don't have a config file present in project directory
@@ -135,14 +135,16 @@ export default class LinterJSCS {
         const scope = editor.getGrammar().scopeName;
 
         let errors;
-        if (scope === 'text.html.basic' || scope === 'text.plain.null-grammar') { // text.plain.null-grammar is temp for tests
-          let result = extractJs(filePath, text);
+        // text.plain.null-grammar is temp for tests
+        if (scope === 'text.html.basic' || scope === 'text.plain.null-grammar') {
+          const result = extractJs(filePath, text);
 
           result.sources.forEach((script) => {
             this.jscs.checkString(script.source, filePath).getErrorList().forEach((error) => {
-              error.line += script.line;
-              error.column += script.offset;
-              result.addError(error);
+              const err = error;
+              err.line += script.line;
+              err.column += script.offset;
+              result.addError(err);
             });
           }, this);
 
@@ -154,8 +156,12 @@ export default class LinterJSCS {
         }
 
         // Exclude `excludeFiles` for errors
-        var exclude = globule.isMatch(config && config.excludeFiles, this.getFilePath(editor.getPath()));
-        if (exclude) return Promise.resolve([]);
+        const exclude = globule.isMatch(
+          config && config.excludeFiles, this.getFilePath(editor.getPath())
+        );
+        if (exclude) {
+          return Promise.resolve([]);
+        }
 
         return Promise.resolve(errors.map(({ rule, message, line, column }) => {
           const type = this.displayAs;
@@ -168,12 +174,13 @@ export default class LinterJSCS {
            * Ref: https://github.com/jquery/esprima/issues/1457
            * TODO: Remove when jscs updates
            */
+          let col = column;
           const maxCol = editor.getBuffer().lineLengthForRow(line - 1);
-          if ((column - 1) > maxCol) {
-            column = maxCol + 1;
+          if ((col - 1) > maxCol) {
+            col = maxCol + 1;
           }
 
-          const range = helpers.rangeFromLineNumber(editor, line - 1, column - 1);
+          const range = helpers.rangeFromLineNumber(editor, line - 1, col - 1);
 
           return { type, html, filePath, range };
         }));
@@ -181,18 +188,32 @@ export default class LinterJSCS {
     };
   }
 
-  static getFilePath(path) {
-    const relative = atom.project.relativizePath(path);
+  static getFilePath(file) {
+    const relative = atom.project.relativizePath(file);
     return relative[1];
   }
 
   static getConfig(filePath) {
+    let config;
     if (path.isAbsolute(this.configPath)) {
-      return configFile.load(false, this.configPath);
+      config = configFile.load(false, this.configPath);
+    } else {
+      config = configFile.load(false,
+        path.join(path.dirname(filePath), this.configPath));
     }
 
-    return configFile.load(false,
-      path.join(path.dirname(filePath), this.configPath));
+    // Options passed to `jscs` from package configuration
+    const options = { esnext: this.esnext };
+    const newConfig = objectAssign(
+      options,
+      config || { preset: this.preset }
+    );
+    // `configPath` is non-enumerable so `Object.assign` won't copy it.
+    // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
+    if (!newConfig.configPath && config && config.configPath) {
+      newConfig.configPath = config.configPath;
+    }
+    return newConfig;
   }
 
   static fixString(editor) {
@@ -211,23 +232,7 @@ export default class LinterJSCS {
     // must be something with new 2.0.0 JSCS
     this.jscs = new JSCS();
     this.jscs.registerDefaultRules();
-
-    const filePath = editor.getPath();
-
-    // Options passed to `jscs` from package configuration
-    const options = { esnext: this.esnext };
-    if (this.preset !== '<none>') {
-      options.preset = this.preset;
-    }
-
-    // `configPath` is non-enumerable so `Object.assign` won't copy it.
-    // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
-    let jscsConfig = Object.assign({}, options, config);
-    if (!jscsConfig.configPath && config) {
-      jscsConfig.configPath = config.configPath;
-    }
-
-    this.jscs.configure(jscsConfig);
+    this.jscs.configure(config);
 
     const fixedText = this.jscs.fixString(editorText, editorPath).output;
     if (editorText === fixedText) {
@@ -238,4 +243,4 @@ export default class LinterJSCS {
     editor.setText(fixedText);
     editor.setCursorScreenPosition(cursorPosition);
   }
-};
+}
