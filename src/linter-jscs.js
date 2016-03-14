@@ -230,11 +230,8 @@ export default class LinterJSCS {
 
     // Options passed to `jscs` from package configuration
     const options = { esnext: this.esnext };
-    if (this.preset !== '<none>') {
-      options.preset = this.preset;
-    }
 
-    const jscsConfig = Object.assign({}, options, config);
+    const jscsConfig = Object.assign({}, options, config || { preset: this.preset });
     // `configPath` is non-enumerable so `Object.assign` won't copy it.
     // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
     if (!jscsConfig.configPath && config) {
