@@ -5,6 +5,7 @@ import configFile from 'jscs/lib/cli-config';
 import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
 import objectAssign from 'object-assign';
+import { CompositeDisposable } from 'atom';
 
 const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
 
@@ -51,35 +52,37 @@ export default class LinterJSCS {
     },
   };
 
-  static get preset() {
-    return atom.config.get('linter-jscs.preset');
-  }
-
-  static get esnext() {
-    return atom.config.get('linter-jscs.esnext');
-  }
-
-  static get onlyConfig() {
-    return atom.config.get('linter-jscs.onlyConfig');
-  }
-
-  static get fixOnSave() {
-    return atom.config.get('linter-jscs.fixOnSave');
-  }
-
-  static get displayAs() {
-    return atom.config.get('linter-jscs.displayAs');
-  }
-
-  static get configPath() {
-    return atom.config.get('linter-jscs.configPath');
-  }
-
   static activate() {
     // Install dependencies using atom-package-deps
     require('atom-package-deps').install('linter-jscs');
 
-    this.observer = atom.workspace.observeTextEditors((editor) => {
+    this.subscriptions = new CompositeDisposable;
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.preset', (preset) => {
+      this.preset = preset;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.esnext', (esnext) => {
+      this.esnext = esnext;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.onlyConfig', (onlyConfig) => {
+      this.onlyConfig = onlyConfig;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.fixOnSave', (fixOnSave) => {
+      this.fixOnSave = fixOnSave;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.displayAs', (displayAs) => {
+      this.displayAs = displayAs;
+    }));
+
+    this.subscriptions.add(atom.config.observe('linter-jscs.configPath', (configPath) => {
+      this.configPath = configPath;
+    }));
+
+    this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
         if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 || this.testFixOnSave) {
           // Exclude `excludeFiles` for fix on save
@@ -93,11 +96,11 @@ export default class LinterJSCS {
           }
         }
       });
-    });
+    }));
   }
 
   static deactivate() {
-    this.observer.dispose();
+    this.subscriptions.dispose();
   }
 
   static provideLinter() {
