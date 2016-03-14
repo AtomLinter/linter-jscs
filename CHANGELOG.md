@@ -1,5 +1,10 @@
 # Change Log
 
+## v3.4.9
+
+*   Fix ([#197](https://github.com/AtomLinter/linter-jscs/issues/197)) by
+    unifying config discovery.
+
 ## v3.4.8
 
 *   Fix ([#196](https://github.com/AtomLinter/linter-jscs/issues/196)) where
