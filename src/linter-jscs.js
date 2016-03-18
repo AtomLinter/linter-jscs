@@ -122,14 +122,14 @@ export default class LinterJSCS {
         // must be something with new 2.0.0 JSCS
         this.jscs = new JSCS();
         this.jscs.registerDefaultRules();
-
         const config = this.getConfig(filePath);
-        const jscsConfig = overrideOptions || config;
-        this.jscs.configure(jscsConfig);
 
         // We don't have a config file present in project directory
         // let's return an empty array of errors
-        if (!config && this.onlyConfig) return Promise.resolve([]);
+        if (!config) return Promise.resolve([]);
+
+        const jscsConfig = overrideOptions || config;
+        this.jscs.configure(jscsConfig);
 
         const text = editor.getText();
         const scope = editor.getGrammar().scopeName;
@@ -202,6 +202,10 @@ export default class LinterJSCS {
         path.join(path.dirname(filePath), this.configPath));
     }
 
+    if (!config && this.onlyConfig) {
+      return;
+    }
+
     // Options passed to `jscs` from package configuration
     const options = { esnext: this.esnext };
     const newConfig = objectAssign(
@@ -221,7 +225,7 @@ export default class LinterJSCS {
     const editorText = editor.getText();
 
     const config = this.getConfig(editorPath);
-    if (!config && this.onlyConfig) {
+    if (!config) {
       return;
     }
 
