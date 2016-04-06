@@ -97,6 +97,19 @@ export default class LinterJSCS {
         }
       });
     }));
+
+    this.subscriptions.add(atom.commands.add('atom-text-editor', {
+      'linter-jscs:fix-file': () => {
+        const textEditor = atom.workspace.getActiveTextEditor();
+
+        if (!textEditor || textEditor.isModified()) {
+          atom.notifications.addError('Linter-jscs: Please save the file before fixing');
+          return;
+        }
+
+        this.fixString(textEditor);
+      },
+    }));
   }
 
   static deactivate() {
