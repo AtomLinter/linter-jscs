@@ -102,8 +102,8 @@ export default class LinterJSCS {
       'linter-jscs:fix-file': () => {
         const textEditor = atom.workspace.getActiveTextEditor();
 
-        if (!textEditor || textEditor.isModified()) {
-          atom.notifications.addError('Linter-jscs: Please save the file before fixing');
+        if (!textEditor) {
+          atom.notifications.addError('Linter-jscs: invalid textEditor received, aborting.');
           return;
         }
 
