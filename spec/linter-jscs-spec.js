@@ -168,6 +168,28 @@ describe('The jscs provider for Linter', () => {
     });
   });
 
+  describe('commands', () => {
+    describe('fix command', () => {
+      it('fixes sloppy.js', () => {
+        let editor;
+
+        waitsForPromise(() =>
+          atom.workspace.open(sloppyPath).then(openEditor => {
+            editor = openEditor;
+          })
+        );
+
+        waitsForPromise(() => {
+          const editorView = atom.views.getView(editor);
+          atom.commands.dispatch(editorView, 'linter-jscs:fix-file');
+          return lint(editor).then(messages => {
+            expect(messages.length).toBe(0);
+          });
+        });
+      });
+    });
+  });
+
   describe('custom rules', () => {
     let editor = null;
     beforeEach(() => {
