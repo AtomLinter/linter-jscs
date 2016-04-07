@@ -1,5 +1,10 @@
 # Change Log
 
+## v3.5.0
+
+*   Add a command to trigger fixing ([#212](https://github.com/AtomLinter/linter-jscs/pull/212))
+*   Update JSCS
+
 ## v3.4.10
 
 *   Fix [#196](https://github.com/AtomLinter/linter-jscs/issues/196) (again) ([#204](https://github.com/AtomLinter/linter-jscs/pull/204))
