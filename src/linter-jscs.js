@@ -216,7 +216,7 @@ export default class LinterJSCS {
     }
 
     if (!config && this.onlyConfig) {
-      return;
+      return undefined;
     }
 
     // Options passed to `jscs` from package configuration
