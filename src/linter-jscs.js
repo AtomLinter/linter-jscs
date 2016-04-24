@@ -178,22 +178,10 @@ export default class LinterJSCS {
 
         return Promise.resolve(errors.map(({ rule, message, line, column }) => {
           const type = this.displayAs;
-          const html = `<span class='badge badge-flexible'>${rule}</span> ${message}`;
-
-          /* Work around a bug in esprima causing jscs to report columns past
-           * the end of the line. This is fixed in esprima@2.7.2, but as jscs
-           * only depends on "~2.7.0" we need to wait on a jscs release depending
-           * on a later version till this can be removed.
-           * Ref: https://github.com/jquery/esprima/issues/1457
-           * TODO: Remove when jscs updates
-           */
-          let col = column;
-          const maxCol = editor.getBuffer().lineLengthForRow(line - 1);
-          if ((col - 1) > maxCol) {
-            col = maxCol + 1;
-          }
-
-          const range = helpers.rangeFromLineNumber(editor, line - 1, col - 1);
+          // TODO: Remove this when https://github.com/jscs-dev/node-jscs/issues/2235 has been addressed
+          const cleanMessage = message.replace(`${rule}: `, '');
+          const html = `<span class='badge badge-flexible'>${rule}</span> ${cleanMessage}`;
+          const range = helpers.rangeFromLineNumber(editor, line - 1, column - 1);
 
           return { type, html, filePath, range };
         }));
@@ -220,7 +208,7 @@ export default class LinterJSCS {
     }
 
     // Options passed to `jscs` from package configuration
-    const options = { esnext: this.esnext };
+    const options = {};
     const newConfig = objectAssign(
       options,
       config || { preset: this.preset }
