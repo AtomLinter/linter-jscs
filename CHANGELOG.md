@@ -1,9 +1,13 @@
 # Change Log
 
+## v4.0.0
+
+*   Update to JSCS v3.0.3
+
 ## v3.5.0
 
 *   Add a command to trigger fixing ([#212](https://github.com/AtomLinter/linter-jscs/pull/212))
-*   Update JSCS
+*   Update JSCS to v2.11.0
 
 ## v3.4.10
 
@@ -22,7 +26,7 @@
 ## v3.4.7
 
 *   Revert old behavior of skipping local preset if there is a config file.
-*   Change `onDidSave` to `onWillSave` 
+*   Change `onDidSave` to `onWillSave`
 
 ## v3.4.6
 
