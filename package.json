@@ -33,8 +33,8 @@
   "devDependencies": {
     "eslint": "^2.9.0",
     "babel-eslint": "^6.0.2",
-    "eslint-config-airbnb-base": "^2.0.0",
-    "eslint-plugin-import": "^1.6.1",
+    "eslint-config-airbnb-base": "^3.0.0",
+    "eslint-plugin-import": "^1.7.0",
     "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
   },
@@ -43,7 +43,14 @@
     "parser": "babel-eslint",
     "rules": {
       "global-require": 0,
-      "import/no-unresolved": [2, {"ignore": ["atom"]}]
+      "import/no-unresolved": [
+        2,
+        {
+          "ignore": [
+            "atom"
+          ]
+        }
+      ]
     },
     "globals": {
       "atom": true
