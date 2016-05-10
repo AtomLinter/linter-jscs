@@ -21,12 +21,6 @@ export default class LinterJSCS {
         'node-style-guide', 'wikimedia', 'wordpress', 'yandex',
       ],
     },
-    esnext: {
-      description: 'Attempts to parse your code as ES6+, JSX, and Flow using ' +
-        'the babel-jscs package as the parser.',
-      type: 'boolean',
-      default: false,
-    },
     onlyConfig: {
       title: 'Only Config',
       description: 'Disable linter if there is no config file found for the linter.',
@@ -60,10 +54,6 @@ export default class LinterJSCS {
 
     this.subscriptions.add(atom.config.observe('linter-jscs.preset', (preset) => {
       this.preset = preset;
-    }));
-
-    this.subscriptions.add(atom.config.observe('linter-jscs.esnext', (esnext) => {
-      this.esnext = esnext;
     }));
 
     this.subscriptions.add(atom.config.observe('linter-jscs.onlyConfig', (onlyConfig) => {
