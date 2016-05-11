@@ -42,9 +42,10 @@
     "extends": "airbnb-base",
     "parser": "babel-eslint",
     "rules": {
-      "global-require": 0,
+      "no-console": ["off"],
+      "global-require": ["off"],
       "import/no-unresolved": [
-        2,
+        "error",
         {
           "ignore": [
             "atom"

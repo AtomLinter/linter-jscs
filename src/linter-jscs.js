@@ -9,6 +9,23 @@ import { CompositeDisposable } from 'atom';
 
 const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
 
+function startMeasure(baseName) {
+  performance.mark(`${baseName}-start`);
+}
+
+function endMeasure(baseName) {
+  if (atom.inDevMode()) {
+    performance.mark(`${baseName}-end`);
+    performance.measure(baseName, `${baseName}-start`, `${baseName}-end`);
+    console.log(`${baseName} took: `, performance.getEntriesByName(baseName)[0].duration);
+    performance.clearMarks(`${baseName}-end`);
+    performance.clearMeasures(baseName);
+  }
+  performance.clearMarks(`${baseName}-start`);
+}
+
+let JSCS;
+
 export default class LinterJSCS {
   static config = {
     preset: {
@@ -114,22 +131,40 @@ export default class LinterJSCS {
       scope: 'file',
       lintOnFly: true,
       lint: (editor, opts, overrideOptions, testFixOnSave) => {
-        const JSCS = require('jscs');
+        startMeasure('linter-jscs: Lint');
 
+        // Load JSCS if it hasn't already been loaded
+        if (!JSCS) {
+          JSCS = require('jscs');
+        }
+
+        // Set only by specs
         this.testFixOnSave = testFixOnSave;
 
         const filePath = editor.getPath();
+        const config = this.getConfig(filePath);
+
+        // We don't have a config file present in project directory
+        // let's return an empty array of errors
+        if (!config) {
+          endMeasure('linter-jscs: Lint');
+          return Promise.resolve([]);
+        }
+
+        // Exclude `excludeFiles` for errors
+        const exclude = globule.isMatch(
+          config && config.excludeFiles, this.getFilePath(editor.getPath())
+        );
+        if (exclude) {
+          endMeasure('linter-jscs: Lint');
+          return Promise.resolve([]);
+        }
 
         // We need re-initialize JSCS before every lint
         // or it will looses the errors, didn't trace the error
         // must be something with new 2.0.0 JSCS
         this.jscs = new JSCS();
         this.jscs.registerDefaultRules();
-        const config = this.getConfig(filePath);
-
-        // We don't have a config file present in project directory
-        // let's return an empty array of errors
-        if (!config) return Promise.resolve([]);
 
         const jscsConfig = overrideOptions || config;
         this.jscs.configure(jscsConfig);
@@ -139,6 +174,7 @@ export default class LinterJSCS {
 
         let errors;
         // text.plain.null-grammar is temp for tests
+        startMeasure('linter-jscs: JSCS');
         if (scope === 'text.html.basic' || scope === 'text.plain.null-grammar') {
           const result = extractJs(filePath, text);
 
@@ -157,16 +193,9 @@ export default class LinterJSCS {
             .checkString(text, filePath)
             .getErrorList();
         }
+        endMeasure('linter-jscs: JSCS');
 
-        // Exclude `excludeFiles` for errors
-        const exclude = globule.isMatch(
-          config && config.excludeFiles, this.getFilePath(editor.getPath())
-        );
-        if (exclude) {
-          return Promise.resolve([]);
-        }
-
-        return Promise.resolve(errors.map(({ rule, message, line, column }) => {
+        const translatedErrors = errors.map(({ rule, message, line, column }) => {
           const type = this.displayAs;
           // TODO: Remove this when https://github.com/jscs-dev/node-jscs/issues/2235 has been addressed
           const cleanMessage = message.replace(`${rule}: `, '');
@@ -174,7 +203,9 @@ export default class LinterJSCS {
           const range = helpers.rangeFromLineNumber(editor, line - 1, column - 1);
 
           return { type, html, filePath, range };
-        }));
+        });
+        endMeasure('linter-jscs: Lint');
+        return Promise.resolve(translatedErrors);
       },
     };
   }
@@ -212,15 +243,17 @@ export default class LinterJSCS {
   }
 
   static fixString(editor) {
+    startMeasure('linter-jscs: Fix');
     const editorPath = editor.getPath();
-    const editorText = editor.getText();
-
     const config = this.getConfig(editorPath);
     if (!config) {
       return;
     }
 
-    const JSCS = require('jscs');
+    // Load JSCS if it hasn't already been loaded
+    if (!JSCS) {
+      JSCS = require('jscs');
+    }
 
     // We need re-initialize JSCS before every lint
     // or it will looses the errors, didn't trace the error
@@ -229,6 +262,7 @@ export default class LinterJSCS {
     this.jscs.registerDefaultRules();
     this.jscs.configure(config);
 
+    const editorText = editor.getText();
     const fixedText = this.jscs.fixString(editorText, editorPath).output;
     if (editorText === fixedText) {
       return;
@@ -237,5 +271,6 @@ export default class LinterJSCS {
     const cursorPosition = editor.getCursorScreenPosition();
     editor.setText(fixedText);
     editor.setCursorScreenPosition(cursorPosition);
+    endMeasure('linter-jscs: Fix');
   }
 }
