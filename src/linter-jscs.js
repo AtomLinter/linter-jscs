@@ -68,6 +68,7 @@ export default class LinterJSCS {
     require('atom-package-deps').install('linter-jscs');
 
     this.subscriptions = new CompositeDisposable;
+    this.textEditors = new Map();
 
     this.subscriptions.add(atom.config.observe('linter-jscs.preset', (preset) => {
       this.preset = preset;
@@ -90,11 +91,13 @@ export default class LinterJSCS {
     }));
 
     this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
-      editor.getBuffer().onWillSave(() => {
+      const currentEditor = new CompositeDisposable;
+      this.textEditors.set(editor.id, currentEditor);
+      currentEditor.add(editor.getBuffer().onWillSave(() => {
         const scope = editor.getGrammar().scopeName;
-        if ((grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
-          || this.testFixOnSave
-        ) {
+        if (atom.workspace.getActiveTextEditor().id === editor.id &&
+          (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
+          || this.testFixOnSave) {
           // Exclude `excludeFiles` for fix on save
           const config = this.getConfig(editor.getPath());
           const exclude = globule.isMatch(
@@ -105,7 +108,11 @@ export default class LinterJSCS {
             this.fixString(editor);
           }
         }
-      });
+      }));
+      currentEditor.add(editor.onDidDestroy(() => {
+        currentEditor.dispose();
+        this.textEditors.delete(editor.id);
+      }));
     }));
 
     this.subscriptions.add(atom.commands.add('atom-text-editor', {
@@ -124,6 +131,7 @@ export default class LinterJSCS {
 
   static deactivate() {
     this.subscriptions.dispose();
+    this.textEditors.forEach(editor => editor.dispose());
   }
 
   static provideLinter() {
