@@ -91,7 +91,10 @@ export default class LinterJSCS {
 
     this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
       editor.getBuffer().onWillSave(() => {
-        if (grammarScopes.indexOf(editor.getGrammar().scopeName) !== -1 || this.testFixOnSave) {
+        const scope = editor.getGrammar().scopeName;
+        if ((grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
+          || this.testFixOnSave
+        ) {
           // Exclude `excludeFiles` for fix on save
           const config = this.getConfig(editor.getPath());
           const exclude = globule.isMatch(
