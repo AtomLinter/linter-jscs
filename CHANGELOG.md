@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.0.1
+
+*   Don't run Fix-on-Save on HTML files, that method doesn't support them ([#250](https://github.com/AtomLinter/linter-jscs/pull/250))
+
 ## v4.0.0
 
 *   Update to JSCS v3.0.3
