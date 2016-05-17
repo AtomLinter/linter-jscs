@@ -35,7 +35,7 @@ export default class LinterJSCS {
       default: 'airbnb',
       enum: [
         'airbnb', 'crockford', 'google', 'grunt', 'idiomatic', 'jquery', 'mdcs',
-        'node-style-guide', 'wikimedia', 'wordpress', 'yandex',
+        'node-style-guide', 'wikimedia', 'wordpress',
       ],
     },
     onlyConfig: {
