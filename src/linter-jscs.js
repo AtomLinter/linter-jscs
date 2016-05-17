@@ -68,7 +68,6 @@ export default class LinterJSCS {
     require('atom-package-deps').install('linter-jscs');
 
     this.subscriptions = new CompositeDisposable;
-    this.textEditors = new Map();
 
     this.subscriptions.add(atom.config.observe('linter-jscs.preset', (preset) => {
       this.preset = preset;
@@ -90,10 +89,13 @@ export default class LinterJSCS {
       this.configPath = configPath;
     }));
 
+    this.editorDisposables = new Map();
     this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
-      const currentEditor = new CompositeDisposable;
-      this.textEditors.set(editor.id, currentEditor);
-      currentEditor.add(editor.getBuffer().onWillSave(() => {
+      // Now we can handle multiple events for this editor
+      const editorHandlers = new CompositeDisposable;
+      this.editorDisposables.set(editor.id, editorHandlers);
+      // Fix before saving
+      editorHandlers.add(editor.getBuffer().onWillSave(() => {
         const scope = editor.getGrammar().scopeName;
         if (atom.workspace.getActiveTextEditor().id === editor.id &&
           (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
@@ -109,9 +111,10 @@ export default class LinterJSCS {
           }
         }
       }));
-      currentEditor.add(editor.onDidDestroy(() => {
-        currentEditor.dispose();
-        this.textEditors.delete(editor.id);
+      // Remove all disposables associated with this editor
+      editorHandlers.add(editor.onDidDestroy(() => {
+        editorHandlers.dispose();
+        this.editorDisposables.delete(editor.id);
       }));
     }));
 
@@ -131,7 +134,7 @@ export default class LinterJSCS {
 
   static deactivate() {
     this.subscriptions.dispose();
-    this.textEditors.forEach(editor => editor.dispose());
+    this.editorDisposables.forEach(editor => editor.dispose());
   }
 
   static provideLinter() {
