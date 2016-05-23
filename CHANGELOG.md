@@ -1,5 +1,10 @@
 # Change Log
 
+## v4.0.2
+
+*   Remove the non-existant Yandex preset ([#253](https://github.com/AtomLinter/linter-jscs/pull/253))
+*   No longer attempt to run fix-on-save on a destroyed editor ([#247](https://github.com/AtomLinter/linter-jscs/pull/247))
+
 ## v4.0.1
 
 *   Don't run Fix-on-Save on HTML files, that method doesn't support them ([#250](https://github.com/AtomLinter/linter-jscs/pull/250))
