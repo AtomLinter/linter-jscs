@@ -89,12 +89,17 @@ export default class LinterJSCS {
       this.configPath = configPath;
     }));
 
+    this.editorDisposables = new Map();
     this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
-      editor.getBuffer().onWillSave(() => {
+      // Now we can handle multiple events for this editor
+      const editorHandlers = new CompositeDisposable;
+      this.editorDisposables.set(editor.id, editorHandlers);
+      // Fix before saving
+      editorHandlers.add(editor.getBuffer().onWillSave(() => {
         const scope = editor.getGrammar().scopeName;
-        if ((grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
-          || this.testFixOnSave
-        ) {
+        if (atom.workspace.getActiveTextEditor().id === editor.id &&
+          (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
+          || this.testFixOnSave) {
           // Exclude `excludeFiles` for fix on save
           const config = this.getConfig(editor.getPath());
           const exclude = globule.isMatch(
@@ -105,7 +110,12 @@ export default class LinterJSCS {
             this.fixString(editor);
           }
         }
-      });
+      }));
+      // Remove all disposables associated with this editor
+      editorHandlers.add(editor.onDidDestroy(() => {
+        editorHandlers.dispose();
+        this.editorDisposables.delete(editor.id);
+      }));
     }));
 
     this.subscriptions.add(atom.commands.add('atom-text-editor', {
@@ -124,6 +134,7 @@ export default class LinterJSCS {
 
   static deactivate() {
     this.subscriptions.dispose();
+    this.editorDisposables.forEach(editor => editor.dispose());
   }
 
   static provideLinter() {
