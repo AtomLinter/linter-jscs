@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.0.3
+
+*   Update JSCS to v3.0.4 ([#262](https://github.com/AtomLinter/linter-jscs/pull/262))
+
 ## v4.0.2
 
 *   Remove the non-existant Yandex preset ([#253](https://github.com/AtomLinter/linter-jscs/pull/253))
