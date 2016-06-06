@@ -17,7 +17,7 @@
     "atom-linter": "^4.7.0",
     "atom-package-deps": "^4.0.1",
     "globule": "^1.0.0",
-    "jscs": "3.0.3",
+    "jscs": "3.0.4",
     "object-assign": "^4.0.1"
   },
   "package-deps": [
@@ -42,8 +42,12 @@
     "extends": "airbnb-base",
     "parser": "babel-eslint",
     "rules": {
-      "no-console": ["off"],
-      "global-require": ["off"],
+      "no-console": [
+        "off"
+      ],
+      "global-require": [
+        "off"
+      ],
       "import/no-unresolved": [
         "error",
         {
