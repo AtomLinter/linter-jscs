@@ -60,7 +60,7 @@ describe('The jscs provider for Linter', () => {
           expect(messages[0].text).not.toBeDefined();
           expect(messages[0].html).toBe(message);
           expect(messages[0].filePath).toBe(sloppyPath);
-          expect(messages[0].range).toEqual([[2, 9], [2, 12]]);
+          expect(messages[0].range).toEqual([[2, 9], [2, 11]]);
         })
       );
     });
@@ -113,7 +113,7 @@ describe('The jscs provider for Linter', () => {
           expect(messages[0].text).not.toBeDefined();
           expect(messages[0].html).toBe(message);
           expect(messages[0].filePath).toBe(sloppyHTMLPath);
-          expect(messages[0].range).toEqual([[11, 15], [11, 18]]);
+          expect(messages[0].range).toEqual([[11, 15], [11, 17]]);
         })
       );
     });
