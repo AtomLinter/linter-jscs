@@ -1,5 +1,10 @@
 # Change Log
 
+## v4.0.5
+
+*   Update `atom-linter` to v6.0.0 ([#273](https://github.com/AtomLinter/linter-jscs/pull/273))
+*   Update JSCS to v3.0.6 ([#278](https://github.com/AtomLinter/linter-jscs/pull/278))
+
 ## v4.0.4
 
 *   Update JSCS to v3.0.5 ([#272](https://github.com/AtomLinter/linter-jscs/pull/272))
