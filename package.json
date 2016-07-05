@@ -17,7 +17,7 @@
     "atom-linter": "^5.0.2",
     "atom-package-deps": "^4.0.1",
     "globule": "^1.0.0",
-    "jscs": "3.0.5",
+    "jscs": "3.0.6",
     "object-assign": "^4.0.1"
   },
   "package-deps": [
