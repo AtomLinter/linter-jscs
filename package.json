@@ -33,7 +33,7 @@
   "devDependencies": {
     "eslint": "^2.9.0",
     "babel-eslint": "^6.0.2",
-    "eslint-config-airbnb-base": "^3.0.0",
+    "eslint-config-airbnb-base": "^5.0.1",
     "eslint-plugin-import": "^1.7.0",
     "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
