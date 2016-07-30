@@ -31,10 +31,10 @@
     }
   },
   "devDependencies": {
-    "eslint": "^2.9.0",
+    "eslint": "^3.1.0",
     "babel-eslint": "^6.0.2",
-    "eslint-config-airbnb-base": "^3.0.0",
-    "eslint-plugin-import": "^1.7.0",
+    "eslint-config-airbnb-base": "^4.0.0",
+    "eslint-plugin-import": "^1.10.3",
     "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
   },
