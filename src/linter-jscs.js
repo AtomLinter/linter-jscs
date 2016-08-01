@@ -67,7 +67,7 @@ export default class LinterJSCS {
     // Install dependencies using atom-package-deps
     require('atom-package-deps').install('linter-jscs');
 
-    this.subscriptions = new CompositeDisposable;
+    this.subscriptions = new CompositeDisposable();
 
     this.subscriptions.add(atom.config.observe('linter-jscs.preset', (preset) => {
       this.preset = preset;
@@ -92,13 +92,13 @@ export default class LinterJSCS {
     this.editorDisposables = new Map();
     this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
       // Now we can handle multiple events for this editor
-      const editorHandlers = new CompositeDisposable;
+      const editorHandlers = new CompositeDisposable();
       this.editorDisposables.set(editor.id, editorHandlers);
       // Fix before saving
       editorHandlers.add(editor.getBuffer().onWillSave(() => {
         const scope = editor.getGrammar().scopeName;
-        if (atom.workspace.getActiveTextEditor().id === editor.id &&
-          (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
+        if ((atom.workspace.getActiveTextEditor().id === editor.id &&
+          (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic'))
           || this.testFixOnSave) {
           // Exclude `excludeFiles` for fix on save
           const config = this.getConfig(editor.getPath());
@@ -139,6 +139,7 @@ export default class LinterJSCS {
 
   static provideLinter() {
     const helpers = require('atom-linter');
+
     return {
       name: 'JSCS',
       grammarScopes,

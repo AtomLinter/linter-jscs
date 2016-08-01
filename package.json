@@ -58,14 +58,16 @@
             "atom"
           ]
         }
-      ]
+      ],
+      "import/no-extraneous-dependencies": "off"
     },
     "globals": {
       "atom": true
     },
     "env": {
       "es6": true,
-      "node": true
+      "node": true,
+      "browser": true
     }
   }
 }
