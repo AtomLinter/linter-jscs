@@ -160,7 +160,7 @@ describe('The jscs provider for Linter', () => {
 
     it('should fix the file', () => {
       waitsForPromise(() => {
-        const tempFile = temp.openSync().path;
+        const tempFile = temp.track().openSync().path;
         editor.saveAs(tempFile);
 
         return lint(editor, {}, { }, true).then(messages => {
