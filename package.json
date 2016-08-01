@@ -30,6 +30,13 @@
       }
     }
   },
+  "activationHooks": [
+    "language-babel:grammar-used",
+    "language-html:grammar-used",
+    "language-javascript-jsx:grammar-used",
+    "language-javascript:grammar-used",
+    "language-jsx:grammar-used"
+  ],
   "devDependencies": {
     "eslint": "^2.9.0",
     "babel-eslint": "^6.0.2",

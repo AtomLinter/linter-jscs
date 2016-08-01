@@ -14,15 +14,17 @@ describe('The jscs provider for Linter', () => {
   const lint = linter.provideLinter().lint;
 
   beforeEach(() => {
-    waitsForPromise(() =>
-      atom.packages.activatePackage('linter-jscs')
-    );
+    const activationPromise = atom.packages.activatePackage('linter-jscs');
+
     waitsForPromise(() =>
       atom.packages.activatePackage('language-javascript')
     );
     waitsForPromise(() =>
       atom.workspace.open(sloppyPath)
     );
+
+    atom.packages.triggerDeferredActivationHooks();
+    waitsForPromise(() => activationPromise);
   });
 
   it('should be in the packages list', () =>
