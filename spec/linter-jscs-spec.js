@@ -1,8 +1,8 @@
 'use babel';
 
-import linter from '../src/linter-jscs';
 import temp from 'temp';
 import * as path from 'path';
+import linter from '../src/linter-jscs';
 
 const sloppyPath = path.join(__dirname, 'files', 'sloppy.js');
 const sloppyHTMLPath = path.join(__dirname, 'files', 'sloppy.html');

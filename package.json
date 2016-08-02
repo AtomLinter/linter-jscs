@@ -39,9 +39,9 @@
   ],
   "devDependencies": {
     "babel-eslint": "^6.0.2",
-    "eslint": "^2.9.0",
-    "eslint-config-airbnb-base": "^3.0.0",
-    "eslint-plugin-import": "^1.7.0",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-import": "^1.12.0",
     "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
   },
@@ -58,14 +58,16 @@
             "atom"
           ]
         }
-      ]
+      ],
+      "import/no-extraneous-dependencies": "off"
     },
     "globals": {
       "atom": true
     },
     "env": {
       "es6": true,
-      "node": true
+      "node": true,
+      "browser": true
     }
   }
 }
