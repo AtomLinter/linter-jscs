@@ -1,23 +1,43 @@
+
+# Project specific config
+
+# Installed for linting the project
+language: node_js
+
+matrix:
+  include:
+    - os: linux
+      node_js: "6"
+      env: ATOM_CHANNEL=stable
+
+    - os: linux
+      node_js: "6"
+      env: ATOM_CHANNEL=beta
+
+    - os: osx
+      node_js: "6"
+      env: ATOM_CHANNEL=stable
+
+env:
+  global:
+    - APM_TEST_PACKAGES=""
+
+# Generic setup follows
+script: 'curl -Ls https://github.com/Arcanemagus/ci/raw/atomlinter/build-package.sh | sh'
+
 notifications:
   email:
     on_success: never
     on_failure: change
 
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
+branches:
+  only:
+    - master
 
 git:
   depth: 10
 
 sudo: false
-
-os:
-  - linux
-  - osx
-
-env:
-  matrix:
-    - ATOM_CHANNEL=stable
-    - ATOM_CHANNEL=beta
 
 addons:
   apt:
@@ -26,7 +46,3 @@ addons:
     - git
     - libgnome-keyring-dev
     - fakeroot
-
-branches:
-  only:
-    - master
