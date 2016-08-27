@@ -1,5 +1,4 @@
-
-# Project specific config
+### Project specific config ###
 
 # Installed for linting the project
 language: node_js
@@ -20,10 +19,13 @@ matrix:
 
 env:
   global:
-    - APM_TEST_PACKAGES=""
+    - ATOM_LINT_WITH_BUNDLED_NODE="false"
 
-# Generic setup follows
-script: 'curl -Ls https://github.com/Arcanemagus/ci/raw/atomlinter/build-package.sh | sh'
+### Generic setup follows ###
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
+
+# Needed to disable the auto-install step running `npm install`
+install: true
 
 notifications:
   email:
