@@ -38,7 +38,7 @@
     "language-jsx:grammar-used"
   ],
   "devDependencies": {
-    "babel-eslint": "^6.0.2",
+    "babel-eslint": "^7.0.0",
     "eslint": "^3.6.1",
     "eslint-config-airbnb-base": "^8.0.0",
     "eslint-plugin-import": "^1.16.0",
