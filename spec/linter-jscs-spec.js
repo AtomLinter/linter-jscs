@@ -39,7 +39,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() =>
-        atom.workspace.open(sloppyPath).then(openEditor => {
+        atom.workspace.open(sloppyPath).then((openEditor) => {
           editor = openEditor;
         })
       );
@@ -47,9 +47,9 @@ describe('The jscs provider for Linter', () => {
 
     it('finds at least one message', () => {
       waitsForPromise(() =>
-        lint(editor).then(messages => {
-          expect(messages.length).toBeGreaterThan(0);
-        })
+        lint(editor).then(messages =>
+          expect(messages.length).toBeGreaterThan(0)
+        )
       );
     });
 
@@ -57,7 +57,7 @@ describe('The jscs provider for Linter', () => {
       const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span>' +
         ' Missing comma before closing curly brace';
       waitsForPromise(() =>
-        lint(editor).then(messages => {
+        lint(editor).then((messages) => {
           expect(messages[0].type).toBe('error');
           expect(messages[0].text).not.toBeDefined();
           expect(messages[0].html).toBe(message);
@@ -71,9 +71,9 @@ describe('The jscs provider for Linter', () => {
   it('finds nothing wrong with an empty file', () => {
     waitsForPromise(() =>
       atom.workspace.open(emptyPath).then(editor =>
-        lint(editor).then(messages => {
-          expect(messages.length).toBe(0);
-        })
+        lint(editor).then(messages =>
+          expect(messages.length).toBe(0)
+        )
       )
     );
   });
@@ -81,9 +81,9 @@ describe('The jscs provider for Linter', () => {
   it('finds nothing wrong with a valid file', () => {
     waitsForPromise(() =>
       atom.workspace.open(goodPath).then(editor =>
-        lint(editor).then(messages => {
-          expect(messages.length).toBe(0);
-        })
+        lint(editor).then(messages =>
+          expect(messages.length).toBe(0)
+        )
       )
     );
   });
@@ -92,7 +92,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() =>
-        atom.workspace.open(sloppyHTMLPath).then(openEditor => {
+        atom.workspace.open(sloppyHTMLPath).then((openEditor) => {
           editor = openEditor;
         })
       );
@@ -100,9 +100,9 @@ describe('The jscs provider for Linter', () => {
 
     it('finds at least one message', () => {
       waitsForPromise(() =>
-        lint(editor).then(messages => {
-          expect(messages.length).toBeGreaterThan(0);
-        })
+        lint(editor).then(messages =>
+          expect(messages.length).toBeGreaterThan(0)
+        )
       );
     });
 
@@ -110,7 +110,7 @@ describe('The jscs provider for Linter', () => {
       const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span> ' +
         'Missing comma before closing curly brace';
       waitsForPromise(() =>
-        lint(editor).then(messages => {
+        lint(editor).then((messages) => {
           expect(messages[0].type).toBe('error');
           expect(messages[0].text).not.toBeDefined();
           expect(messages[0].html).toBe(message);
@@ -125,7 +125,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() =>
-        atom.workspace.open(sloppyPath).then(openEditor => {
+        atom.workspace.open(sloppyPath).then((openEditor) => {
           editor = openEditor;
         })
       );
@@ -133,17 +133,17 @@ describe('The jscs provider for Linter', () => {
 
     it('should return no errors if the file is excluded', () => {
       waitsForPromise(() =>
-        lint(editor, {}, { excludeFiles: ['sloppy.js'] }).then(messages => {
-          expect(messages.length).toBe(0);
-        })
+        lint(editor, {}, { excludeFiles: ['sloppy.js'] }).then(messages =>
+          expect(messages.length).toBe(0)
+        )
       );
     });
 
     it('should return no errors if `requireTrailingComma` is set to null', () => {
       waitsForPromise(() =>
-        lint(editor, {}, { requireTrailingComma: null }).then(messages => {
-          expect(messages.length).toBe(0);
-        })
+        lint(editor, {}, { requireTrailingComma: null }).then(messages =>
+          expect(messages.length).toBe(0)
+        )
       );
     });
   });
@@ -152,7 +152,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() =>
-        atom.workspace.open(sloppyPath).then(openEditor => {
+        atom.workspace.open(sloppyPath).then((openEditor) => {
           editor = openEditor;
         })
       );
@@ -163,9 +163,9 @@ describe('The jscs provider for Linter', () => {
         const tempFile = temp.track().openSync().path;
         editor.saveAs(tempFile);
 
-        return lint(editor, {}, { }, true).then(messages => {
-          expect(messages.length).toBe(0);
-        });
+        return lint(editor, {}, { }, true).then(messages =>
+          expect(messages.length).toBe(0)
+        );
       });
     });
   });
@@ -176,7 +176,7 @@ describe('The jscs provider for Linter', () => {
         let editor;
 
         waitsForPromise(() =>
-          atom.workspace.open(sloppyPath).then(openEditor => {
+          atom.workspace.open(sloppyPath).then((openEditor) => {
             editor = openEditor;
           })
         );
@@ -184,9 +184,9 @@ describe('The jscs provider for Linter', () => {
         waitsForPromise(() => {
           const editorView = atom.views.getView(editor);
           atom.commands.dispatch(editorView, 'linter-jscs:fix-file');
-          return lint(editor).then(messages => {
-            expect(messages.length).toBe(0);
-          });
+          return lint(editor).then(messages =>
+            expect(messages.length).toBe(0)
+          );
         });
       });
     });
@@ -198,7 +198,7 @@ describe('The jscs provider for Linter', () => {
     let editor = null;
     beforeEach(() => {
       waitsForPromise(() =>
-        atom.workspace.open(lflPath).then(openEditor => {
+        atom.workspace.open(lflPath).then((openEditor) => {
           editor = openEditor;
         })
       );
@@ -214,7 +214,7 @@ describe('The jscs provider for Linter', () => {
       const message = '<span class=\'badge badge-flexible\'>lineLength</span> ' +
         'Line must be at most 40 characters';
       waitsForPromise(() =>
-        lint(editor, {}, config).then(messages => {
+        lint(editor, {}, config).then((messages) => {
           expect(messages.length).toBe(1);
           expect(messages[0].html).toBe(message);
         })

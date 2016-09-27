@@ -5,6 +5,7 @@ import configFile from 'jscs/lib/cli-config';
 import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
 import objectAssign from 'object-assign';
+// eslint-disable-next-line import/extensions
 import { CompositeDisposable } from 'atom';
 
 const grammarScopes = ['source.js', 'source.js.jsx', 'text.html.basic'];
