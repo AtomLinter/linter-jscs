@@ -1,5 +1,11 @@
 # Change Log
 
+## v4.1.0
+
+*   Update JSCS to v3.0.7 ([#283](https://github.com/AtomLinter/linter-jscs/pull/283))
+    *   This is the _**LAST**_ release ever for JSCS
+*   Only activate `linter-jscs` when it could be used ([#295](https://github.com/AtomLinter/linter-jscs/pull/295))
+
 ## v4.0.5
 
 *   Update `atom-linter` to v6.0.0 ([#273](https://github.com/AtomLinter/linter-jscs/pull/273))
