@@ -40,7 +40,7 @@
   "devDependencies": {
     "eslint": "^3.6.1",
     "eslint-config-airbnb-base": "^8.0.0",
-    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-import": "^2.0.0",
     "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
   },
