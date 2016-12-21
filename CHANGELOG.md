@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.1.1
+
+*   Remove unused styles that were triggering deprecation warnings ([#318](https://github.com/AtomLinter/linter-jscs/pull/318))
+
 ## v4.1.0
 
 *   Update JSCS to v3.0.7 ([#283](https://github.com/AtomLinter/linter-jscs/pull/283))
