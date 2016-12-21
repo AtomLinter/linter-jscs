@@ -17,10 +17,10 @@ describe('The jscs provider for Linter', () => {
     const activationPromise = atom.packages.activatePackage('linter-jscs');
 
     waitsForPromise(() =>
-      atom.packages.activatePackage('language-javascript')
+      atom.packages.activatePackage('language-javascript'),
     );
     waitsForPromise(() =>
-      atom.workspace.open(sloppyPath)
+      atom.workspace.open(sloppyPath),
     );
 
     atom.packages.triggerDeferredActivationHooks();
@@ -28,11 +28,11 @@ describe('The jscs provider for Linter', () => {
   });
 
   it('should be in the packages list', () =>
-    expect(atom.packages.isPackageLoaded('linter-jscs')).toBe(true)
+    expect(atom.packages.isPackageLoaded('linter-jscs')).toBe(true),
   );
 
   it('should be an active package', () =>
-    expect(atom.packages.isPackageActive('linter-jscs')).toBe(true)
+    expect(atom.packages.isPackageActive('linter-jscs')).toBe(true),
   );
 
   describe('checks sloppy.js and', () => {
@@ -41,15 +41,15 @@ describe('The jscs provider for Linter', () => {
       waitsForPromise(() =>
         atom.workspace.open(sloppyPath).then((openEditor) => {
           editor = openEditor;
-        })
+        }),
       );
     });
 
     it('finds at least one message', () => {
       waitsForPromise(() =>
         lint(editor).then(messages =>
-          expect(messages.length).toBeGreaterThan(0)
-        )
+          expect(messages.length).toBeGreaterThan(0),
+        ),
       );
     });
 
@@ -63,7 +63,7 @@ describe('The jscs provider for Linter', () => {
           expect(messages[0].html).toBe(message);
           expect(messages[0].filePath).toBe(sloppyPath);
           expect(messages[0].range).toEqual([[2, 9], [2, 11]]);
-        })
+        }),
       );
     });
   });
@@ -72,9 +72,9 @@ describe('The jscs provider for Linter', () => {
     waitsForPromise(() =>
       atom.workspace.open(emptyPath).then(editor =>
         lint(editor).then(messages =>
-          expect(messages.length).toBe(0)
-        )
-      )
+          expect(messages.length).toBe(0),
+        ),
+      ),
     );
   });
 
@@ -82,9 +82,9 @@ describe('The jscs provider for Linter', () => {
     waitsForPromise(() =>
       atom.workspace.open(goodPath).then(editor =>
         lint(editor).then(messages =>
-          expect(messages.length).toBe(0)
-        )
-      )
+          expect(messages.length).toBe(0),
+        ),
+      ),
     );
   });
 
@@ -94,15 +94,15 @@ describe('The jscs provider for Linter', () => {
       waitsForPromise(() =>
         atom.workspace.open(sloppyHTMLPath).then((openEditor) => {
           editor = openEditor;
-        })
+        }),
       );
     });
 
     it('finds at least one message', () => {
       waitsForPromise(() =>
         lint(editor).then(messages =>
-          expect(messages.length).toBeGreaterThan(0)
-        )
+          expect(messages.length).toBeGreaterThan(0),
+        ),
       );
     });
 
@@ -116,7 +116,7 @@ describe('The jscs provider for Linter', () => {
           expect(messages[0].html).toBe(message);
           expect(messages[0].filePath).toBe(sloppyHTMLPath);
           expect(messages[0].range).toEqual([[11, 15], [11, 17]]);
-        })
+        }),
       );
     });
   });
@@ -127,23 +127,23 @@ describe('The jscs provider for Linter', () => {
       waitsForPromise(() =>
         atom.workspace.open(sloppyPath).then((openEditor) => {
           editor = openEditor;
-        })
+        }),
       );
     });
 
     it('should return no errors if the file is excluded', () => {
       waitsForPromise(() =>
         lint(editor, {}, { excludeFiles: ['sloppy.js'] }).then(messages =>
-          expect(messages.length).toBe(0)
-        )
+          expect(messages.length).toBe(0),
+        ),
       );
     });
 
     it('should return no errors if `requireTrailingComma` is set to null', () => {
       waitsForPromise(() =>
         lint(editor, {}, { requireTrailingComma: null }).then(messages =>
-          expect(messages.length).toBe(0)
-        )
+          expect(messages.length).toBe(0),
+        ),
       );
     });
   });
@@ -154,7 +154,7 @@ describe('The jscs provider for Linter', () => {
       waitsForPromise(() =>
         atom.workspace.open(sloppyPath).then((openEditor) => {
           editor = openEditor;
-        })
+        }),
       );
     });
 
@@ -164,7 +164,7 @@ describe('The jscs provider for Linter', () => {
         editor.saveAs(tempFile);
 
         return lint(editor, {}, { }, true).then(messages =>
-          expect(messages.length).toBe(0)
+          expect(messages.length).toBe(0),
         );
       });
     });
@@ -178,14 +178,14 @@ describe('The jscs provider for Linter', () => {
         waitsForPromise(() =>
           atom.workspace.open(sloppyPath).then((openEditor) => {
             editor = openEditor;
-          })
+          }),
         );
 
         waitsForPromise(() => {
           const editorView = atom.views.getView(editor);
           atom.commands.dispatch(editorView, 'linter-jscs:fix-file');
           return lint(editor).then(messages =>
-            expect(messages.length).toBe(0)
+            expect(messages.length).toBe(0),
           );
         });
       });
