@@ -5,7 +5,7 @@ import configFile from 'jscs/lib/cli-config';
 import extractJs from 'jscs/lib/extract-js';
 import globule from 'globule';
 import objectAssign from 'object-assign';
-// eslint-disable-next-line import/extensions
+// eslint-disable-next-line import/extensions, import/no-extraneous-dependencies
 import { CompositeDisposable } from 'atom';
 
 // Internal variables
@@ -26,6 +26,7 @@ function endMeasure(baseName) {
   if (atom.inDevMode()) {
     performance.mark(`${baseName}-end`);
     performance.measure(baseName, `${baseName}-start`, `${baseName}-end`);
+    // eslint-disable-next-line no-console
     console.log(`${baseName} took: `, performance.getEntriesByName(baseName)[0].duration);
     performance.clearMarks(`${baseName}-end`);
     performance.clearMeasures(baseName);
@@ -55,7 +56,7 @@ function getConfig(filePath) {
   const options = {};
   const newConfig = objectAssign(
     options,
-    config || { preset }
+    config || { preset },
   );
   // `configPath` is non-enumerable so `Object.assign` won't copy it.
   // Without a proper `configPath` JSCS plugs cannot be loaded. See #175.
@@ -174,7 +175,7 @@ export default {
           // Exclude `excludeFiles` for fix on save
           const config = getConfig(editor.getPath());
           const exclude = globule.isMatch(
-            config && config.excludeFiles, getFilePath(editor.getPath())
+            config && config.excludeFiles, getFilePath(editor.getPath()),
           );
 
           if ((fixOnSave && !exclude) || this.testFixOnSave) {
@@ -239,7 +240,7 @@ export default {
 
         // Exclude `excludeFiles` for errors
         const exclude = globule.isMatch(
-          config && config.excludeFiles, getFilePath(editor.getPath())
+          config && config.excludeFiles, getFilePath(editor.getPath()),
         );
         if (exclude) {
           endMeasure('linter-jscs: Lint');

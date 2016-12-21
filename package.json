@@ -38,16 +38,15 @@
     "language-jsx:grammar-used"
   ],
   "devDependencies": {
-    "eslint": "^3.6.1",
-    "eslint-config-airbnb-base": "^8.0.0",
-    "eslint-plugin-import": "^1.16.0",
+    "eslint": "^3.12.0",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
     "fsmonitor": "^0.2.4",
     "temp": "^0.8.3"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
     "rules": {
-      "no-console": "off",
       "global-require": "off",
       "import/no-unresolved": [
         "error",
@@ -56,14 +55,12 @@
             "atom"
           ]
         }
-      ],
-      "import/no-extraneous-dependencies": "off"
+      ]
     },
     "globals": {
       "atom": true
     },
     "env": {
-      "es6": true,
       "node": true,
       "browser": true
     }
