@@ -287,7 +287,7 @@ export default {
           // TODO: Remove this when https://github.com/jscs-dev/node-jscs/issues/2235 has been addressed
           const cleanMessage = message.replace(`${rule}: `, '');
           const html = `<span class='badge badge-flexible'>${rule}</span> ${cleanMessage}`;
-          const range = helpers.rangeFromLineNumber(editor, line - 1, column - 1);
+          const range = helpers.generateRange(editor, line - 1, column - 1);
 
           return { type, html, filePath, range };
         });
