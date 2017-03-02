@@ -43,7 +43,7 @@ function getConfig(filePath) {
   let config;
   if (path.isAbsolute(configPath)) {
     config = configFile.load(false, configPath);
-  } else {
+  } else if (filePath) {
     config = configFile.load(false,
       path.join(path.dirname(filePath), configPath));
   }
@@ -163,6 +163,15 @@ export default {
 
     this.editorDisposables = new Map();
     this.subscriptions.add(atom.workspace.observeTextEditors((editor) => {
+      if (!atom.workspace.isTextEditor(editor)) {
+        // Make sure we are dealing with a real editor...
+        return;
+      }
+      const filePath = editor.getPath();
+      if (!filePath) {
+        // Editor has never been saved, and thus has no path, just return for now.
+        return;
+      }
       // Now we can handle multiple events for this editor
       const editorHandlers = new CompositeDisposable();
       this.editorDisposables.set(editor.id, editorHandlers);
@@ -173,9 +182,9 @@ export default {
           (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic'))
           || this.testFixOnSave) {
           // Exclude `excludeFiles` for fix on save
-          const config = getConfig(editor.getPath());
+          const config = getConfig(filePath);
           const exclude = globule.isMatch(
-            config && config.excludeFiles, getFilePath(editor.getPath()),
+            config && config.excludeFiles, getFilePath(filePath),
           );
 
           if ((fixOnSave && !exclude) || this.testFixOnSave) {
