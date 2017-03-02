@@ -1,5 +1,10 @@
 # Change Log
 
+## v4.1.2
+
+*   Update `atom-linter` to v9.0.0 ([#323](https://github.com/AtomLinter/linter-jscs/pull/323))
+*   Handle editors with no path in Fix-on-Save ([#328](https://github.com/AtomLinter/linter-jscs/pull/328))
+
 ## v4.1.1
 
 *   Remove unused styles that were triggering deprecation warnings ([#318](https://github.com/AtomLinter/linter-jscs/pull/318))
