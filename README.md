@@ -26,5 +26,5 @@ problems).
 ## Installation
 
 ```ShellSession
-apm install linter-jscs
+npm install linter-jscs
 ```
