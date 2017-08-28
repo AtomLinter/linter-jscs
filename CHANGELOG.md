@@ -1,5 +1,12 @@
 # Change Log
 
+## v4.1.3
+
+*   Update dependencies ([#335][], [#338][])
+
+[#335]:https://github.com/AtomLinter/linter-jscs/pull/335
+[#338]:https://github.com/AtomLinter/linter-jscs/pull/338
+
 ## v4.1.2
 
 *   Update `atom-linter` to v9.0.0 ([#323](https://github.com/AtomLinter/linter-jscs/pull/323))
