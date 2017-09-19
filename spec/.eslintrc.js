@@ -1,6 +1,14 @@
 module.exports = {
   env: {
-    jasmine: true,
     atomtest: true,
+    jasmine: true,
+  },
+  rules: {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ]
   }
 };
