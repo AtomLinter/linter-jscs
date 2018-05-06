@@ -3,7 +3,10 @@
   "version": "4.1.3",
   "main": "src/linter-jscs",
   "description": "Linter plugin for JavaScript, using JSCS",
-  "repository": "https://github.com/AtomLinter/linter-jscs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AtomLinter/linter-jscs.git"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
