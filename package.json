@@ -3,12 +3,16 @@
   "version": "4.1.3",
   "main": "src/linter-jscs",
   "description": "Linter plugin for JavaScript, using JSCS",
-  "repository": "https://github.com/AtomLinter/linter-jscs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AtomLinter/linter-jscs.git"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
+    "commitmsg": "commitlint -e $GIT_PARAMS",
     "tdd": "fsmonitor -d src -s -q apm test",
     "test": "apm test",
     "lint": "eslint ."
@@ -38,6 +42,12 @@
     "language-jsx:grammar-used"
   ],
   "devDependencies": {
+    "@commitlint/cli": "^6.1.3",
+    "@commitlint/config-conventional": "^6.1.3",
+    "@commitlint/travis-cli": "^6.1.3",
+    "@semantic-release/apm-config": "^2.0.1",
+    "husky": "^0.14.3",
+    "semantic-release": "^15.1.7",
     "eslint": "^4.6.0",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.7.0",
@@ -65,5 +75,13 @@
       "node": true,
       "browser": true
     }
+  },
+  "release": {
+    "extends": "@semantic-release/apm-config"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }
