@@ -42,9 +42,9 @@
     "language-jsx:grammar-used"
   ],
   "devDependencies": {
-    "@commitlint/cli": "6.2.0",
-    "@commitlint/config-conventional": "6.1.3",
-    "@commitlint/travis-cli": "6.2.0",
+    "@commitlint/cli": "7.3.2",
+    "@commitlint/config-conventional": "7.3.1",
+    "@commitlint/travis-cli": "7.3.2",
     "@semantic-release/apm-config": "2.0.1",
     "husky": "0.14.3",
     "semantic-release": "15.13.3",
