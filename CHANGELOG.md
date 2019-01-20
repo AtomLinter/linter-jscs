@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/AtomLinter/linter-jscs/compare/v4.1.4...v4.2.0) (2019-01-20)
+
+
+### Features
+
+* upgrade to linter API v2 ([b2a177a](https://github.com/AtomLinter/linter-jscs/commit/b2a177a))
+
 ## [4.1.4](https://github.com/AtomLinter/linter-jscs/compare/v4.1.3...v4.1.4) (2019-01-20)
 
 
