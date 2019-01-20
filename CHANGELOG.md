@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/AtomLinter/linter-jscs/compare/v4.1.3...v4.1.4) (2019-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency atom-package-deps to v5 ([e1a753f](https://github.com/AtomLinter/linter-jscs/commit/e1a753f))
+
 # Change Log
 
 ## v4.1.3
