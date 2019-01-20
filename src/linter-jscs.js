@@ -180,9 +180,13 @@ export default {
       // Fix before saving
       editorHandlers.add(editor.getBuffer().onWillSave(() => {
         const scope = editor.getGrammar().scopeName;
-        if ((atom.workspace.getActiveTextEditor().id === editor.id &&
-          (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic'))
-          || this.testFixOnSave) {
+        if (
+          (
+            atom.workspace.getActiveTextEditor().id === editor.id
+            && (grammarScopes.indexOf(scope) !== -1 && scope !== 'text.html.basic')
+          )
+          || this.testFixOnSave
+        ) {
           // Exclude `excludeFiles` for fix on save
           const config = getConfig(filePath);
           const exclude = globule.isMatch(

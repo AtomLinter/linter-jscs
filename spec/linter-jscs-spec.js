@@ -1,7 +1,9 @@
 'use babel';
 
-// eslint-disable-next-line no-unused-vars
-import { it, fit, wait, beforeEach, afterEach } from 'jasmine-fix';
+import {
+  // eslint-disable-next-line no-unused-vars
+  it, fit, wait, beforeEach, afterEach,
+} from 'jasmine-fix';
 import temp from 'temp';
 import * as path from 'path';
 import linter from '../src/linter-jscs';
@@ -25,17 +27,17 @@ describe('The jscs provider for Linter', () => {
     await activationPromise;
   });
 
-  it('should be in the packages list', () =>
-    expect(atom.packages.isPackageLoaded('linter-jscs')).toBe(true));
+  it('should be in the packages list',
+    () => expect(atom.packages.isPackageLoaded('linter-jscs')).toBe(true));
 
-  it('should be an active package', () =>
-    expect(atom.packages.isPackageActive('linter-jscs')).toBe(true));
+  it('should be an active package',
+    () => expect(atom.packages.isPackageActive('linter-jscs')).toBe(true));
 
   it('checks sloppy.js and verifies the first message', async () => {
     const editor = await atom.workspace.open(sloppyPath);
     const messages = await lint(editor);
-    const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span>' +
-      ' Missing comma before closing curly brace';
+    const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span>'
+      + ' Missing comma before closing curly brace';
 
     expect(messages.length).toBe(2);
     expect(messages[0].type).toBe('error');
@@ -62,8 +64,8 @@ describe('The jscs provider for Linter', () => {
   it('checks sloppy.html and verifies the first message', async () => {
     const editor = await atom.workspace.open(sloppyHTMLPath);
     const messages = await lint(editor);
-    const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span> ' +
-      'Missing comma before closing curly brace';
+    const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span> '
+      + 'Missing comma before closing curly brace';
 
     expect(messages.length).toBe(2);
     expect(messages[0].type).toBe('error');
