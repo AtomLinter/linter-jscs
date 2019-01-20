@@ -12,10 +12,14 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "tdd": "fsmonitor -d src -s -q apm test",
     "test": "apm test",
     "lint": "eslint ."
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "dependencies": {
     "atom-linter": "^10.0.0",
