@@ -36,15 +36,15 @@ describe('The jscs provider for Linter', () => {
   it('checks sloppy.js and verifies the first message', async () => {
     const editor = await atom.workspace.open(sloppyPath);
     const messages = await lint(editor);
-    const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span>'
-      + ' Missing comma before closing curly brace';
+    const message = 'requireTrailingComma: '
+      + 'Missing comma before closing curly brace';
 
     expect(messages.length).toBe(2);
-    expect(messages[0].type).toBe('error');
-    expect(messages[0].text).not.toBeDefined();
-    expect(messages[0].html).toBe(message);
-    expect(messages[0].filePath).toBe(sloppyPath);
-    expect(messages[0].range).toEqual([[2, 9], [2, 11]]);
+    expect(messages[0].severity).toBe('error');
+    expect(messages[0].description).not.toBeDefined();
+    expect(messages[0].excerpt).toBe(message);
+    expect(messages[0].location.file).toBe(sloppyPath);
+    expect(messages[0].location.position).toEqual([[2, 9], [2, 11]]);
   });
 
   it('finds nothing wrong with an empty file', async () => {
@@ -64,15 +64,15 @@ describe('The jscs provider for Linter', () => {
   it('checks sloppy.html and verifies the first message', async () => {
     const editor = await atom.workspace.open(sloppyHTMLPath);
     const messages = await lint(editor);
-    const message = '<span class=\'badge badge-flexible\'>requireTrailingComma</span> '
+    const message = 'requireTrailingComma: '
       + 'Missing comma before closing curly brace';
 
     expect(messages.length).toBe(2);
-    expect(messages[0].type).toBe('error');
-    expect(messages[0].text).not.toBeDefined();
-    expect(messages[0].html).toBe(message);
-    expect(messages[0].filePath).toBe(sloppyHTMLPath);
-    expect(messages[0].range).toEqual([[11, 15], [11, 17]]);
+    expect(messages[0].severity).toBe('error');
+    expect(messages[0].description).not.toBeDefined();
+    expect(messages[0].excerpt).toBe(message);
+    expect(messages[0].location.file).toBe(sloppyHTMLPath);
+    expect(messages[0].location.position).toEqual([[11, 15], [11, 17]]);
   });
 
   describe('provides override options and', () => {

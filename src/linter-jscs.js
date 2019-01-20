@@ -232,7 +232,7 @@ export default {
       name: 'JSCS',
       grammarScopes,
       scope: 'file',
-      lintOnFly: true,
+      lintsOnChange: true,
       lint: (editor, opts, overrideOptions, testFixOnSave) => {
         startMeasure('linter-jscs: Lint');
 
@@ -300,18 +300,15 @@ export default {
         endMeasure('linter-jscs: JSCS');
 
         const translatedErrors = errors.map(({
-          rule, message, line, column,
-        }) => {
-          const type = displayAs;
-          // TODO: Remove this when https://github.com/jscs-dev/node-jscs/issues/2235 has been addressed
-          const cleanMessage = message.replace(`${rule}: `, '');
-          const html = `<span class='badge badge-flexible'>${rule}</span> ${cleanMessage}`;
-          const range = helpers.generateRange(editor, line - 1, column - 1);
-
-          return {
-            type, html, filePath, range,
-          };
-        });
+          message, line, column,
+        }) => ({
+          severity: displayAs,
+          excerpt: message,
+          location: {
+            file: filePath,
+            position: helpers.generateRange(editor, line - 1, column - 1),
+          },
+        }));
         endMeasure('linter-jscs: Lint');
         return Promise.resolve(translatedErrors);
       },
