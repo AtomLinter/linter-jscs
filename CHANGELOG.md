@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/AtomLinter/linter-jscs/compare/v4.2.0...v4.2.1) (2019-02-06)
+
+
+### Bug Fixes
+
+* **deps:** pin remaining dependencies ([2d01dd8](https://github.com/AtomLinter/linter-jscs/commit/2d01dd8)), closes [#363](https://github.com/AtomLinter/linter-jscs/issues/363)
+
 # [4.2.0](https://github.com/AtomLinter/linter-jscs/compare/v4.1.4...v4.2.0) (2019-01-20)
 
 

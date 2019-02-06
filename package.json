@@ -1,6 +1,6 @@
 {
   "name": "linter-jscs",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "main": "src/linter-jscs",
   "description": "Linter plugin for JavaScript, using JSCS",
   "repository": {
