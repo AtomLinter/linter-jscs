@@ -52,7 +52,7 @@
     "@semantic-release/apm-config": "6.0.1",
     "husky": "2.5.0",
     "semantic-release": "15.13.16",
-    "eslint": "6.0.0",
+    "eslint": "6.0.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.18.0",
     "fsmonitor": "0.2.4",
