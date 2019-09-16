@@ -222,7 +222,7 @@ export default {
 
   deactivate() {
     this.subscriptions.dispose();
-    this.editorDisposables.forEach(editor => editor.dispose());
+    this.editorDisposables.forEach((editor) => editor.dispose());
   },
 
   provideLinter() {
