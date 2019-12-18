@@ -50,7 +50,7 @@
     "@commitlint/config-conventional": "8.2.0",
     "@commitlint/travis-cli": "8.2.0",
     "@semantic-release/apm-config": "6.0.2",
-    "eslint": "6.6.0",
+    "eslint": "6.7.2",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "2.19.1",
     "fsmonitor": "0.2.4",
