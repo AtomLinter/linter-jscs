@@ -1,3 +1,10 @@
+## [4.2.3](https://github.com/AtomLinter/linter-jscs/compare/v4.2.2...v4.2.3) (2020-01-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency globule to v1.3.0 ([6eaca61](https://github.com/AtomLinter/linter-jscs/commit/6eaca619ff265073cf1c8b27018b9ce109239264))
+
 ## [4.2.2](https://github.com/AtomLinter/linter-jscs/compare/v4.2.1...v4.2.2) (2019-04-22)
 
 
