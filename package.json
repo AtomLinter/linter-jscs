@@ -54,7 +54,7 @@
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "2.19.1",
     "fsmonitor": "0.2.4",
-    "husky": "4.0.6",
+    "husky": "4.0.7",
     "jasmine-fix": "1.3.1",
     "semantic-release": "16.0.1",
     "temp": "0.9.1"
