@@ -49,14 +49,14 @@
     "@commitlint/cli": "8.3.4",
     "@commitlint/config-conventional": "8.3.4",
     "@commitlint/travis-cli": "8.3.4",
-    "@semantic-release/apm-config": "6.0.2",
+    "@semantic-release/apm-config": "8.0.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "2.19.1",
     "fsmonitor": "0.2.4",
     "husky": "4.0.9",
     "jasmine-fix": "1.3.1",
-    "semantic-release": "16.0.1",
+    "semantic-release": "17.0.1",
     "temp": "0.9.1"
   },
   "eslintConfig": {
