@@ -52,7 +52,7 @@
     "@semantic-release/apm-config": "8.0.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.0.0",
-    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-import": "2.20.1",
     "fsmonitor": "0.2.4",
     "husky": "4.2.1",
     "jasmine-fix": "1.3.1",
