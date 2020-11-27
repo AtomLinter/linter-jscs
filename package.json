@@ -51,7 +51,7 @@
     "@commitlint/travis-cli": "8.3.5",
     "@semantic-release/apm-config": "8.0.0",
     "eslint": "6.8.0",
-    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.20.1",
     "fsmonitor": "0.2.4",
     "husky": "4.2.3",
